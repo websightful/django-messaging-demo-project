@@ -1,0 +1,4 @@
+Django==5.1.7
+crispy-tailwind==1.0.3
+django-crispy-forms==2.3
+django-tailwind==3.8.0
