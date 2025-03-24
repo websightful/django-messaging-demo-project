@@ -1,0 +1,29 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">Welcome to Our Site</h1>
+            <div>
+                {% if user.is_authenticated %}
+                    <span class="mr-4">Hello, {{ user.username }}!</span>
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Login</a>
+                {% endif %}
+            </div>
+        </div>
+        <p class="text-gray-600">This is a simple start page using Django and Tailwind CSS.</p>
+    </div>
+</body>
+</html>

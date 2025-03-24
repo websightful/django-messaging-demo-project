@@ -1,0 +1,24 @@
+{% load static tailwind_tags %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8 max-w-md">
+        <h1 class="text-4xl font-bold text-gray-800 mb-8 text-center">Login</h1>
+        <div class="bg-white p-8 rounded-lg shadow-md">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="mt-3 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
