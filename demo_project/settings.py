@@ -31,17 +31,24 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Daphne
+    "daphne",
+    # Django contrib
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sessions",
     "django.contrib.staticfiles",
-    "tailwind",
-    "theme",
-    "pages",
+    # Third-party
     "crispy_forms",
     "crispy_tailwind",
+    "django_messaging",
+    "rest_framework",
+    "tailwind",
+    "theme",
+    # Local
+    "demo_project.apps.pages",
 ]
 
 MIDDLEWARE = [
@@ -142,3 +149,13 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 # Auth configuration
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+ASGI_APPLICATION = "demo_project.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
