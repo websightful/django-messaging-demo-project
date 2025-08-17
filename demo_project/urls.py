@@ -24,4 +24,5 @@ urlpatterns = [
     path("", HomePageView.as_view(), name="home"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("messaging/", include("django_messaging.urls")),
+    path("people/", include("demo_project.apps.people.urls")),
 ]

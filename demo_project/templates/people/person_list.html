@@ -1,0 +1,164 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Users</title>
+    {% tailwind_css %}
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">Active Users</h1>
+            <div>
+                {% if user.is_authenticated %}
+                    <span class="mr-4">Hello, {{ user.username }}!</span>
+                    <a href="{% url 'home' %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2">Home</a>
+                    <form method="post" action="{% url 'logout' %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Login</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Search Form -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <form method="get" class="flex gap-4">
+                <div class="flex-1">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        value="{{ search_query }}" 
+                        placeholder="Search users by username, name, or email..."
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                </div>
+                <button 
+                    type="submit" 
+                    class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
+                >
+                    Search
+                </button>
+                {% if search_query %}
+                    <a 
+                        href="{% url 'people:person_list' %}" 
+                        class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 focus:ring-2 focus:ring-gray-500"
+                    >
+                        Clear
+                    </a>
+                {% endif %}
+            </form>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="mb-4">
+            <p class="text-gray-600">
+                {% if search_query %}
+                    Found {{ total_users }} user{{ total_users|pluralize }} matching "{{ search_query }}"
+                {% else %}
+                    Showing {{ total_users }} active user{{ total_users|pluralize }}
+                {% endif %}
+            </p>
+        </div>
+
+        <!-- Users Grid -->
+        {% if page_obj %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {% for person in page_obj %}
+                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                {{ person.username|first|upper }}
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-lg font-semibold text-gray-800">
+                                    {% if person.first_name or person.last_name %}
+                                        {{ person.first_name }} {{ person.last_name }}
+                                    {% else %}
+                                        {{ person.username }}
+                                    {% endif %}
+                                </h3>
+                                <p class="text-gray-600">@{{ person.username }}</p>
+                            </div>
+                        </div>
+                        
+                        {% if person.email %}
+                            <p class="text-gray-600 mb-4">
+                                <span class="font-medium">Email:</span> {{ person.email }}
+                            </p>
+                        {% endif %}
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">
+                                Joined: {{ person.date_joined|date:"M d, Y" }}
+                            </span>
+                            <a 
+                                href="{% url 'people:person_detail' person.id %}" 
+                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm"
+                            >
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+                <div class="flex justify-center">
+                    <nav class="flex space-x-2">
+                        {% if page_obj.has_previous %}
+                            <a 
+                                href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}" 
+                                class="px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                            >
+                                First
+                            </a>
+                            <a 
+                                href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+                                class="px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                            >
+                                Previous
+                            </a>
+                        {% endif %}
+
+                        <span class="px-3 py-2 bg-blue-500 text-white border border-blue-500 rounded-md">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <a 
+                                href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+                                class="px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                            >
+                                Next
+                            </a>
+                            <a 
+                                href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+                                class="px-3 py-2 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                            >
+                                Last
+                            </a>
+                        {% endif %}
+                    </nav>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="bg-white rounded-lg shadow-md p-8 text-center">
+                <p class="text-gray-600 text-lg">
+                    {% if search_query %}
+                        No users found matching "{{ search_query }}".
+                    {% else %}
+                        No active users found.
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "theme",
     # Local
     "demo_project.apps.pages",
+    "demo_project.apps.people",
 ]
 
 MIDDLEWARE = [
@@ -151,11 +152,24 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 ASGI_APPLICATION = "demo_project.asgi.application"
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+
+# Channel layers configuration with fallback
+try:
+    import redis
+    redis.Redis(host='127.0.0.1', port=6379, db=0).ping()
+    # Redis is available, use it
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [("127.0.0.1", 6379)],
+            },
         },
-    },
-}
+    }
+except:
+    # Redis not available, use in-memory backend (for development only)
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        },
+    }
