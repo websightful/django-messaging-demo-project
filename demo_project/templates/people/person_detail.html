@@ -195,7 +195,7 @@
         <div id="widget-message-container" class="flex flex-col" style="height: calc(100% - 7rem);">
             <!-- Message List -->
             <div id="widget-message-list"
-                 class="flex-1 overflow-y-auto p-3 space-y-2 text-sm"
+                 class="flex-1 overflow-y-auto p-3 space-y-3 text-sm"
                  role="log"
                  aria-live="polite"
                  aria-atomic="false">
@@ -211,7 +211,8 @@
                 <input type="text"
                        id="widget-message-input"
                        class="flex-1 rounded border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:border-blue-500"
-                       placeholder="Type a message...">
+                       placeholder="Type a message..."
+                       autocomplete="off">
                 <button type="submit"
                         class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                     Send
@@ -229,12 +230,37 @@
         </svg>
     </button>
 
+    <!-- Embedded Chat Message Templates -->
+    <template id="message-template">
+        <div class="flex" data-message-id="">
+            <div class="max-w-[70%] flex flex-col">
+                <div class="message-bubble rounded-lg p-3 cursor-pointer hover:opacity-90 transition-opacity inline-block">
+                    <div class="text-xs font-medium mb-1 sender-name"></div>
+                    <div class="text-sm message-content"></div>
+                    <div class="reactions-container"></div>
+                </div>
+                <div class="text-xs mt-1 px-1 message-timestamp hidden"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- CSS Classes for Own Messages -->
+    <div class="hidden">
+        <div class="justify-end items-end bg-blue-500 text-white text-blue-100 text-blue-400"></div>
+    </div>
+
+    <!-- CSS Classes for Other Messages -->
+    <div class="hidden">
+        <div class="justify-start items-start bg-gray-200 text-gray-800 text-gray-600 text-gray-500"></div>
+    </div>
+
     {% csrf_token %}
     <script>
         window.USER_ID = '{{ request.user.id }}';
         window.PERSON_ID = '{{ person.id }}';
         window.PERSON_USERNAME = '{{ person.username }}';
     </script>
-    <script src="{% static 'messaging/js/embedded-chat.js' %}"></script>
+    <script src="{% static 'messaging/js/common.js' %}"></script>
+    <script src="{% static 'messaging/js/embedded-chat.js' %}?v=20250817-1420-template"></script>
 </body>
 </html>
