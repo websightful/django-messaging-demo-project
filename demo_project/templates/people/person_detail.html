@@ -172,14 +172,5 @@
 
     <!-- Embedded Chat Widget -->
     {% include "messaging/includes/chat.html" %}
-
-    {% csrf_token %}
-    <script>
-        window.USER_ID = '{{ request.user.id }}';
-        window.PERSON_ID = '{{ person.id }}';
-        window.PERSON_USERNAME = '{{ person.username }}';
-    </script>
-    <script src="{% static 'messaging/js/common.js' %}"></script>
-    <script src="{% static 'messaging/js/embedded-chat.js' %}?v=20250817-1420-template"></script>
 </body>
 </html>
