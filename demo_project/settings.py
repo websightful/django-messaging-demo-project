@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     # Local
     "demo_project.apps.pages",
     "demo_project.apps.people",
+    "demo_project.apps.videos",
+    "demo_project.apps.events",
 ]
 
 MIDDLEWARE = [

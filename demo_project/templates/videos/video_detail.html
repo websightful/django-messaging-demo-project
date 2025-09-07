@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ video.title }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Video Content -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                {% if video.thumbnail %}
+                <img src="{{ video.thumbnail }}" alt="{{ video.title }}" class="w-full h-64 object-cover">
+                {% else %}
+                <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+                    <svg class="w-24 h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                    </svg>
+                </div>
+                {% endif %}
+                
+                <div class="p-6">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ video.title }}</h1>
+                    
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                        <span>Uploaded by {{ video.uploaded_by.get_full_name|default:video.uploaded_by.username }}</span>
+                        <span>{{ video.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    
+                    {% if video.description %}
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Description</h3>
+                        <p class="text-gray-600">{{ video.description|linebreaks }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if video.url %}
+                    <div class="flex space-x-4">
+                        <a href="{{ video.url }}" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                            Watch Video
+                        </a>
+                        <a href="{% url 'videos:list' %}" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                            Back to Videos
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Room Sidebar -->
+        <div class="lg:col-span-1">
+            {% include "messaging/includes/room.html" with room=room room_title="Discussion" room_subtitle="Chat about this video" join_button_text="Join Discussion" leave_button_text="Leave Discussion" message_placeholder="Share your thoughts..." %}
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+{% csrf_token %}
+
+<!-- Include emoji picker library before other scripts -->
+<script type="module" src="https://cdn.skypack.dev/emoji-picker-element@^1"></script>
+
+<!-- Include chat room scripts -->
+<script src="{% static 'messaging/js/common.js' %}"></script>
+<script src="{% static 'messaging/js/room.js' %}"></script>
+{% endblock %}

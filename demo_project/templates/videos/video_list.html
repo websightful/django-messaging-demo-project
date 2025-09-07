@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Videos{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Videos</h1>
+        <a href="{% url 'events:list' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+            View Events
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for video in videos %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            {% if video.thumbnail %}
+            <img src="{{ video.thumbnail }}" alt="{{ video.title }}" class="w-full h-48 object-cover">
+            {% else %}
+            <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
+                <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                </svg>
+            </div>
+            {% endif %}
+            
+            <div class="p-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ video.title }}</h3>
+                <p class="text-gray-600 text-sm mb-4">{{ video.description|truncatewords:20 }}</p>
+                
+                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                    <span>By {{ video.uploaded_by.get_full_name|default:video.uploaded_by.username }}</span>
+                    <span>{{ video.created_at|date:"M d, Y" }}</span>
+                </div>
+                
+                <div class="flex space-x-2">
+                    <a href="{{ video.get_absolute_url }}" class="flex-1 bg-blue-500 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
+                        Watch & Chat
+                    </a>
+                    {% if video.url %}
+                    <a href="{{ video.url }}" target="_blank" class="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
+                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-full text-center py-12">
+            <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+            </svg>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No videos yet</h3>
+            <p class="text-gray-500">Videos will appear here when they are uploaded.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

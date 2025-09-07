@@ -1,0 +1,47 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Messaging Demo{% endblock %}</title>
+    {% tailwind_css %}
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <a href="{% url 'home' %}" class="text-xl font-bold text-gray-800">Django Messaging Demo</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'videos:list' %}" class="text-gray-600 hover:text-gray-800">Videos</a>
+                        <a href="{% url 'events:list' %}" class="text-gray-600 hover:text-gray-800">Events</a>
+                        <a href="{% url 'django_messaging:chat-room' %}" class="text-gray-600 hover:text-gray-800">Messages</a>
+                        <span class="text-gray-600">Hello, {{ user.get_full_name|default:user.username }}</span>
+                        <a href="{% url 'logout' %}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex items-center justify-center h-96">
+                <h1 class="text-5xl text-gray-800">Django + Tailwind = ❤️</h1>
+            </div>
+        </div>
+        {% endblock %}
+    </main>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

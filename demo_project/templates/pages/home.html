@@ -37,6 +37,14 @@
                     <h3 class="font-semibold mb-2">💬 Messages</h3>
                     <p class="text-sm">Chat with other users</p>
                 </a>
+                <a href="{% url 'videos:list' %}" class="bg-red-500 text-white p-4 rounded-lg hover:bg-red-600 transition-colors">
+                    <h3 class="font-semibold mb-2">🎥 Videos</h3>
+                    <p class="text-sm">Watch videos with chat rooms</p>
+                </a>
+                <a href="{% url 'events:list' %}" class="bg-yellow-500 text-white p-4 rounded-lg hover:bg-yellow-600 transition-colors">
+                    <h3 class="font-semibold mb-2">📅 Events</h3>
+                    <p class="text-sm">Join events with chat rooms</p>
+                </a>
                 {% if user.is_staff %}
                 <a href="{% url 'admin:index' %}" class="bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-colors">
                     <h3 class="font-semibold mb-2">⚙️ Admin</h3>
