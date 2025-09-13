@@ -32,36 +32,20 @@ def event_detail(request, pk):
         }
     )
 
-    # Check if user is a member and attendee
+    # Check if user is a member of the chat room
     is_member = room.members.filter(id=request.user.id).exists()
-    is_attendee = event.attendees.filter(id=request.user.id).exists()
+
+    # Import messaging settings for room template
+    from django_messaging.conf import app_settings
 
     context = {
         'event': event,
         'room': room,
         'is_member': is_member,
-        'is_attendee': is_attendee,
+        'CONTENT_TOP_OFFSET': app_settings.CONTENT_TOP_OFFSET,
+        'CONTENT_BOTTOM_OFFSET': app_settings.CONTENT_BOTTOM_OFFSET,
     }
     return render(request, 'events/event_detail.html', context)
 
 
-@login_required
-@require_POST
-def join_event(request, pk):
-    """Join an event"""
-    event = get_object_or_404(Event, pk=pk, is_public=True)
 
-    if event.is_full:
-        return JsonResponse({'error': 'Event is full'}, status=400)
-
-    event.attendees.add(request.user)
-    return JsonResponse({'success': True, 'attendee_count': event.attendee_count})
-
-
-@login_required
-@require_POST
-def leave_event(request, pk):
-    """Leave an event"""
-    event = get_object_or_404(Event, pk=pk, is_public=True)
-    event.attendees.remove(request.user)
-    return JsonResponse({'success': True, 'attendee_count': event.attendee_count})

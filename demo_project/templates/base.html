@@ -18,9 +18,10 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     {% if user.is_authenticated %}
-                        <a href="{% url 'videos:list' %}" class="text-gray-600 hover:text-gray-800">Videos</a>
-                        <a href="{% url 'events:list' %}" class="text-gray-600 hover:text-gray-800">Events</a>
-                        <a href="{% url 'django_messaging:chat-room' %}" class="text-gray-600 hover:text-gray-800">Messages</a>
+                        <a href="{% url 'people:person_list' %}" class="{% if request.resolver_match.url_name == 'person_list' or request.resolver_match.url_name == 'person_detail' or '/people/' in request.path %}text-black{% else %}text-gray-600 hover:text-gray-800{% endif %}">People</a>
+                        <a href="{% url 'videos:list' %}" class="{% if request.resolver_match.namespace == 'videos' or '/videos/' in request.path %}text-black{% else %}text-gray-600 hover:text-gray-800{% endif %}">Videos</a>
+                        <a href="{% url 'events:list' %}" class="{% if request.resolver_match.namespace == 'events' or '/events/' in request.path %}text-black{% else %}text-gray-600 hover:text-gray-800{% endif %}">Events</a>
+                        <a href="{% url 'django_messaging:chat-room' %}" class="{% if request.resolver_match.namespace == 'django_messaging' or '/messages/' in request.path %}text-black{% else %}text-gray-600 hover:text-gray-800{% endif %}">Messages</a>
                         <span class="text-gray-600">Hello, {{ user.get_full_name|default:user.username }}</span>
                         <a href="{% url 'logout' %}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Logout</a>
                     {% else %}

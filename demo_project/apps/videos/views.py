@@ -37,10 +37,15 @@ def video_detail(request, pk):
     # Check if user is a member
     is_member = room.members.filter(id=request.user.id).exists()
 
+    # Import messaging settings for room template
+    from django_messaging.conf import app_settings
+
     context = {
         'video': video,
         'room': room,
         'is_member': is_member,
+        'CONTENT_TOP_OFFSET': app_settings.CONTENT_TOP_OFFSET,
+        'CONTENT_BOTTOM_OFFSET': app_settings.CONTENT_BOTTOM_OFFSET,
     }
     return render(request, 'videos/video_detail.html', context)
 

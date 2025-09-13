@@ -102,11 +102,6 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(f'Created event: {event.title}')
                 
-                # Add some attendees
-                attendee_count = min(random.randint(2, len(users)), len(users))
-                attendees = random.sample(users, attendee_count)
-                event.attendees.set(attendees)
-                
                 # Create chat room for event
                 content_type = ContentType.objects.get_for_model(Event)
                 room, room_created = ChatRoom.objects.get_or_create(
@@ -119,9 +114,9 @@ class Command(BaseCommand):
                     }
                 )
                 if room_created:
-                    # Add attendees to the room
-                    room_member_count = min(random.randint(3, 8), len(attendees))
-                    for user in attendees[:room_member_count]:
+                    # Add some random users to the room
+                    room_member_count = min(random.randint(2, 4), len(users))
+                    for user in random.sample(users, room_member_count):
                         ChatMembership.objects.get_or_create(
                             chat=room,
                             user=user,

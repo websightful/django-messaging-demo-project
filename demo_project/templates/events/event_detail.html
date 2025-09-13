@@ -12,11 +12,6 @@
                 <div class="p-6">
                     <div class="flex items-start justify-between mb-4">
                         <h1 class="text-2xl font-bold text-gray-800">{{ event.title }}</h1>
-                        {% if event.is_full %}
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                            Event Full
-                        </span>
-                        {% endif %}
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -44,15 +39,7 @@
                         </div>
                         
                         <div class="space-y-3">
-                            <div class="flex items-center text-gray-600">
-                                <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
-                                </svg>
-                                <div>
-                                    <div class="font-medium">{{ event.attendee_count }} attendee{{ event.attendee_count|pluralize }}</div>
-                                    {% if event.max_attendees %}<div class="text-sm">Max: {{ event.max_attendees }}</div>{% endif %}
-                                </div>
-                            </div>
+
                             
                             <div class="flex items-center text-gray-600">
                                 <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20">
@@ -74,20 +61,7 @@
                     </div>
                     {% endif %}
                     
-                    <div class="flex space-x-4">
-                        {% if not is_attendee and not event.is_full %}
-                        <button id="join-event-btn" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
-                            Join Event
-                        </button>
-                        {% elif is_attendee %}
-                        <button id="leave-event-btn" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors">
-                            Leave Event
-                        </button>
-                        {% endif %}
-                        <a href="{% url 'events:list' %}" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">
-                            Back to Events
-                        </a>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -111,58 +85,6 @@
 <script src="{% static 'messaging/js/room.js' %}"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Event join/leave functionality
-    const joinBtn = document.getElementById('join-event-btn');
-    const leaveBtn = document.getElementById('leave-event-btn');
-
-    if (joinBtn) {
-        joinBtn.addEventListener('click', async () => {
-            try {
-                const response = await fetch(`/events/${window.EVENT_ID}/join/`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    const data = await response.json();
-                    alert(data.error || 'Failed to join event');
-                }
-            } catch (error) {
-                console.error('Error joining event:', error);
-                alert('Failed to join event. Please try again.');
-            }
-        });
-    }
-
-    if (leaveBtn) {
-        leaveBtn.addEventListener('click', async () => {
-            try {
-                const response = await fetch(`/events/${window.EVENT_ID}/leave/`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    const data = await response.json();
-                    alert(data.error || 'Failed to leave event');
-                }
-            } catch (error) {
-                console.error('Error leaving event:', error);
-                alert('Failed to leave event. Please try again.');
-            }
-        });
-    }
-});
+// No additional JavaScript needed for events - just chat functionality
 </script>
 {% endblock %}

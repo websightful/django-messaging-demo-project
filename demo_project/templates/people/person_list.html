@@ -1,70 +1,15 @@
-{% load static tailwind_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Active Users</title>
-    {% tailwind_css %}
-</head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
-        <!-- Header -->
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800">Active Users</h1>
-            <div>
-                {% if user.is_authenticated %}
-                    <span class="mr-4">Hello, {{ user.username }}!</span>
-                    <a href="{% url 'home' %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2">Home</a>
-                    <form method="post" action="{% url 'logout' %}" class="inline">
-                        {% csrf_token %}
-                        <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Logout</button>
-                    </form>
-                {% else %}
-                    <a href="{% url 'login' %}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Login</a>
-                {% endif %}
-            </div>
-        </div>
+{% extends "base.html" %}
 
-        <!-- Search Form -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
-            <form method="get" class="flex gap-4">
-                <div class="flex-1">
-                    <input 
-                        type="text" 
-                        name="search" 
-                        value="{{ search_query }}" 
-                        placeholder="Search users by username, name, or email..."
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    >
-                </div>
-                <button 
-                    type="submit" 
-                    class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
-                >
-                    Search
-                </button>
-                {% if search_query %}
-                    <a 
-                        href="{% url 'people:person_list' %}" 
-                        class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 focus:ring-2 focus:ring-gray-500"
-                    >
-                        Clear
-                    </a>
-                {% endif %}
-            </form>
-        </div>
+{% block title %}People - Django Messaging Demo{% endblock %}
 
-        <!-- Results Summary -->
-        <div class="mb-4">
-            <p class="text-gray-600">
-                {% if search_query %}
-                    Found {{ total_users }} user{{ total_users|pluralize }} matching "{{ search_query }}"
-                {% else %}
-                    Showing {{ total_users }} active user{{ total_users|pluralize }}
-                {% endif %}
-            </p>
-        </div>
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">People</h1>
+        <p class="text-gray-600 mt-2">Connect with other users in the community</p>
+    </div>
+
+
 
         <!-- Users Grid -->
         {% if page_obj %}
@@ -160,5 +105,4 @@
             </div>
         {% endif %}
     </div>
-</body>
-</html>
+{% endblock %}

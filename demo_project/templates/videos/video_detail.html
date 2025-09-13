@@ -9,15 +9,32 @@
         <!-- Video Content -->
         <div class="lg:col-span-2">
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                {% if video.thumbnail %}
-                <img src="{{ video.thumbnail }}" alt="{{ video.title }}" class="w-full h-64 object-cover">
-                {% else %}
-                <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
-                    <svg class="w-24 h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
-                    </svg>
+                <!-- Video Player -->
+                <div class="bg-black" style="height: 400px;">
+                    {% if video.get_embed_url %}
+                    <iframe
+                        src="{{ video.get_embed_url }}"
+                        class="w-full h-full"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-white">
+                        <div class="text-center">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                            </svg>
+                            <p class="text-gray-400">Video not available for embedding</p>
+                            {% if video.url %}
+                            <a href="{{ video.url }}" target="_blank" class="inline-block mt-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                                Watch on YouTube
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
                 
                 <div class="p-6">
                     <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ video.title }}</h1>
@@ -34,16 +51,7 @@
                     </div>
                     {% endif %}
                     
-                    {% if video.url %}
-                    <div class="flex space-x-4">
-                        <a href="{{ video.url }}" target="_blank" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                            Watch Video
-                        </a>
-                        <a href="{% url 'videos:list' %}" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors">
-                            Back to Videos
-                        </a>
-                    </div>
-                    {% endif %}
+
                 </div>
             </div>
         </div>
