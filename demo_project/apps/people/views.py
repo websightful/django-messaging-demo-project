@@ -46,10 +46,13 @@ def person_detail(request, user_id):
     """
     Display detailed information about a specific user.
     """
+    from django_messaging.conf import app_settings
+
     user = get_object_or_404(User, id=user_id, is_active=True)
 
     context = {
         'person': user,
+        'ENABLE_DMS': app_settings.ENABLE_DMS,
     }
 
     return render(request, 'people/person_detail.html', context)

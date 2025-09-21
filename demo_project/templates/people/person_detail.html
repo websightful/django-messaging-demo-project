@@ -142,5 +142,7 @@
     </div>
 
     <!-- Embedded Chat Widget -->
-    {% include "messaging/includes/dm.html" %}
+    {% if ENABLE_DMS %}
+        {% include "messaging/includes/dm.html" %}
+    {% endif %}
 {% endblock %}

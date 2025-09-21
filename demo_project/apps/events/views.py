@@ -44,6 +44,7 @@ def event_detail(request, pk):
         'is_member': is_member,
         'CONTENT_TOP_OFFSET': app_settings.CONTENT_TOP_OFFSET,
         'CONTENT_BOTTOM_OFFSET': app_settings.CONTENT_BOTTOM_OFFSET,
+        'ENABLE_CHAT_ROOMS': app_settings.ENABLE_CHAT_ROOMS,
     }
     return render(request, 'events/event_detail.html', context)
 

@@ -67,9 +67,11 @@
         </div>
         
         <!-- Chat Room Sidebar -->
+        {% if ENABLE_CHAT_ROOMS %}
         <div class="lg:col-span-1">
             {% include "messaging/includes/room.html" with room=room room_title="Event Chat" room_subtitle="Discuss this event" join_button_text="Join Chat" leave_button_text="Leave Chat" message_placeholder="Ask questions or share thoughts..." %}
-    </div>
+        </div>
+        {% endif %}
 </div>
 
 <script>
