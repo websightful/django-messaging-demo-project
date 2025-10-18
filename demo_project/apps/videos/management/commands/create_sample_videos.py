@@ -109,7 +109,7 @@ class Command(BaseCommand):
                     content_type=content_type,
                     object_id=video.pk,
                     defaults={
-                        'name': f"Discussion: {video.title}",
+                        'title': f"Discussion: {video.title}",
                         'is_room': True,
                         'is_group': True,
                     }
@@ -127,14 +127,14 @@ class Command(BaseCommand):
 
         # Create some standalone chat rooms for video discussions
         standalone_rooms = [
-            {'name': 'Video Recommendations', 'description': 'Share and discuss great educational videos'},
-            {'name': 'Learning Discussion', 'description': 'Discuss what you\'ve learned from videos'},
-            {'name': 'Tech Tutorials', 'description': 'Chat about programming and development tutorials'},
+            {'title': 'Video Recommendations', 'description': 'Share and discuss great educational videos'},
+            {'title': 'Learning Discussion', 'description': 'Discuss what you\'ve learned from videos'},
+            {'title': 'Tech Tutorials', 'description': 'Chat about programming and development tutorials'},
         ]
 
         for room_info in standalone_rooms:
             room, created = ChatRoom.objects.get_or_create(
-                name=room_info['name'],
+                title=room_info['title'],
                 is_room=True,
                 content_type=None,
                 object_id=None,
@@ -143,7 +143,7 @@ class Command(BaseCommand):
                 }
             )
             if created:
-                self.stdout.write(f'Created standalone room: {room.name}')
+                self.stdout.write(f'Created standalone room: {room.title}')
                 
                 # Add some users to the room
                 room_user_count = min(random.randint(2, 5), len(users))

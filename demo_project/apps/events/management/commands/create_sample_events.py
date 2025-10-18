@@ -108,7 +108,7 @@ class Command(BaseCommand):
                     content_type=content_type,
                     object_id=event.pk,
                     defaults={
-                        'name': f"Event Chat: {event.title}",
+                        'title': f"Discussion: {event.title}",
                         'is_room': True,
                         'is_group': True,
                     }
@@ -126,14 +126,14 @@ class Command(BaseCommand):
 
         # Create some standalone chat rooms for event community
         standalone_rooms = [
-            {'name': 'Event Planning', 'description': 'Discuss upcoming events and ideas'},
-            {'name': 'Tech Networking', 'description': 'Connect with other tech professionals'},
-            {'name': 'General Discussion', 'description': 'General chat for all community members'},
+            {'title': 'Event Planning', 'description': 'Discuss upcoming events and ideas'},
+            {'title': 'Tech Networking', 'description': 'Connect with other tech professionals'},
+            {'title': 'General Discussion', 'description': 'General chat for all community members'},
         ]
 
         for room_info in standalone_rooms:
             room, created = ChatRoom.objects.get_or_create(
-                name=room_info['name'],
+                title=room_info['title'],
                 is_room=True,
                 content_type=None,
                 object_id=None,
@@ -142,7 +142,7 @@ class Command(BaseCommand):
                 }
             )
             if created:
-                self.stdout.write(f'Created standalone room: {room.name}')
+                self.stdout.write(f'Created standalone room: {room.title}')
                 
                 # Add some users to the room
                 room_user_count = min(random.randint(2, 5), len(users))
