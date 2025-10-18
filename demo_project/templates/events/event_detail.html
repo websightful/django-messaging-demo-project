@@ -67,9 +67,9 @@
         </div>
         
         <!-- Chat Room Sidebar -->
-        {% if ENABLE_CHAT_ROOMS %}
+        {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
         <div class="lg:col-span-1">
-            {% include "messaging/includes/room.html" with room=room room_title="Event Chat" room_subtitle="Discuss this event" join_button_text="Join Chat" leave_button_text="Leave Chat" message_placeholder="Ask questions or share thoughts..." %}
+            {% include "messaging/includes/room.html" with content_object=event room_title="Event Chat" room_subtitle="Discuss this event" join_button_text="Join Chat" leave_button_text="Leave Chat" message_placeholder="Ask questions or share thoughts..." %}
         </div>
         {% endif %}
 </div>
@@ -82,11 +82,4 @@
 {% block extra_js %}
 {% csrf_token %}
 
-<!-- Include chat room scripts -->
-<script src="{% static 'messaging/js/common.js' %}"></script>
-<script src="{% static 'messaging/js/room.js' %}"></script>
-
-<script>
-// No additional JavaScript needed for events - just chat functionality
-</script>
 {% endblock %}

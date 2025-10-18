@@ -57,9 +57,9 @@
         </div>
         
         <!-- Chat Room Sidebar -->
-        {% if ENABLE_CHAT_ROOMS %}
+        {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
         <div class="lg:col-span-1">
-            {% include "messaging/includes/room.html" with room=room room_title="Discussion" room_subtitle="Chat about this video" join_button_text="Join Discussion" leave_button_text="Leave Discussion" message_placeholder="Share your thoughts..." %}
+            {% include "messaging/includes/room.html" with content_object=video room_title="Discussion" room_subtitle="Chat about this video" join_button_text="Join Discussion" leave_button_text="Leave Discussion" message_placeholder="Share your thoughts..." %}
         </div>
         {% endif %}
 </div>
@@ -70,10 +70,4 @@
 {% block extra_js %}
 {% csrf_token %}
 
-<!-- Include emoji picker library before other scripts -->
-<script type="module" src="https://cdn.skypack.dev/emoji-picker-element@^1"></script>
-
-<!-- Include chat room scripts -->
-<script src="{% static 'messaging/js/common.js' %}"></script>
-<script src="{% static 'messaging/js/room.js' %}"></script>
 {% endblock %}

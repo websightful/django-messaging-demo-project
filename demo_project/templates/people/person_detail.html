@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ person.username }} - Django Messaging Demo{% endblock %}
+{% block title %}{{ contact_user.username }} - Django Messaging Demo{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
@@ -12,7 +12,7 @@
                 </svg>
             </a>
             <div>
-                <h1 class="text-3xl font-bold text-gray-800">{{ person.get_full_name|default:person.username }}</h1>
+                <h1 class="text-3xl font-bold text-gray-800">{{ contact_user.get_full_name|default:contact_user.username }}</h1>
                 <p class="text-gray-600">User Profile</p>
             </div>
         </div>
@@ -22,28 +22,28 @@
         <div class="bg-white rounded-lg shadow-md p-8 mb-6">
             <div class="flex items-center mb-6">
                 <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-3xl mr-6">
-                    {{ person.username|first|upper }}
+                    {{ contact_user.username|first|upper }}
                 </div>
                 <div>
                     <h2 class="text-3xl font-bold text-gray-800 mb-2">
-                        {% if person.first_name or person.last_name %}
-                            {{ person.first_name }} {{ person.last_name }}
+                        {% if contact_user.first_name or contact_user.last_name %}
+                            {{ contact_user.first_name }} {{ contact_user.last_name }}
                         {% else %}
-                            {{ person.username }}
+                            {{ contact_user.username }}
                         {% endif %}
                     </h2>
-                    <p class="text-xl text-gray-600">@{{ person.username }}</p>
+                    <p class="text-xl text-gray-600">@{{ contact_user.username }}</p>
                     <div class="flex items-center mt-2">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                             <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
                             Active
                         </span>
-                        {% if person.is_staff %}
+                        {% if contact_user.is_staff %}
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 ml-2">
                                 Staff
                             </span>
                         {% endif %}
-                        {% if person.is_superuser %}
+                        {% if contact_user.is_superuser %}
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 ml-2">
                                 Superuser
                             </span>
@@ -57,31 +57,31 @@
                 <!-- Basic Information -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Basic Information</h3>
-                    
+
                     <div class="space-y-3">
                         <div>
                             <label class="block text-sm font-medium text-gray-600">Username</label>
-                            <p class="text-gray-800">{{ person.username }}</p>
+                            <p class="text-gray-800">{{ contact_user.username }}</p>
                         </div>
-                        
-                        {% if person.first_name %}
+
+                        {% if contact_user.first_name %}
                             <div>
                                 <label class="block text-sm font-medium text-gray-600">First Name</label>
-                                <p class="text-gray-800">{{ person.first_name }}</p>
+                                <p class="text-gray-800">{{ contact_user.first_name }}</p>
                             </div>
                         {% endif %}
-                        
-                        {% if person.last_name %}
+
+                        {% if contact_user.last_name %}
                             <div>
                                 <label class="block text-sm font-medium text-gray-600">Last Name</label>
-                                <p class="text-gray-800">{{ person.last_name }}</p>
+                                <p class="text-gray-800">{{ contact_user.last_name }}</p>
                             </div>
                         {% endif %}
-                        
-                        {% if person.email %}
+
+                        {% if contact_user.email %}
                             <div>
                                 <label class="block text-sm font-medium text-gray-600">Email</label>
-                                <p class="text-gray-800">{{ person.email }}</p>
+                                <p class="text-gray-800">{{ contact_user.email }}</p>
                             </div>
                         {% endif %}
                     </div>
@@ -90,45 +90,45 @@
                 <!-- Account Information -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Account Information</h3>
-                    
+
                     <div class="space-y-3">
                         <div>
                             <label class="block text-sm font-medium text-gray-600">Date Joined</label>
-                            <p class="text-gray-800">{{ person.date_joined|date:"F d, Y \a\t g:i A" }}</p>
+                            <p class="text-gray-800">{{ contact_user.date_joined|date:"F d, Y \a\t g:i A" }}</p>
                         </div>
-                        
+
                         <div>
                             <label class="block text-sm font-medium text-gray-600">Last Login</label>
                             <p class="text-gray-800">
-                                {% if person.last_login %}
-                                    {{ person.last_login|date:"F d, Y \a\t g:i A" }}
+                                {% if contact_user.last_login %}
+                                    {{ contact_user.last_login|date:"F d, Y \a\t g:i A" }}
                                 {% else %}
                                     Never
                                 {% endif %}
                             </p>
                         </div>
-                        
+
                         <div>
                             <label class="block text-sm font-medium text-gray-600">Account Status</label>
                             <p class="text-gray-800">
-                                {% if person.is_active %}
+                                {% if contact_user.is_active %}
                                     <span class="text-green-600 font-medium">Active</span>
                                 {% else %}
                                     <span class="text-red-600 font-medium">Inactive</span>
                                 {% endif %}
                             </p>
                         </div>
-                        
+
                         <div>
                             <label class="block text-sm font-medium text-gray-600">Permissions</label>
                             <div class="space-y-1">
-                                {% if person.is_superuser %}
+                                {% if contact_user.is_superuser %}
                                     <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Superuser</span>
                                 {% endif %}
-                                {% if person.is_staff %}
+                                {% if contact_user.is_staff %}
                                     <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Staff</span>
                                 {% endif %}
-                                {% if not person.is_superuser and not person.is_staff %}
+                                {% if not contact_user.is_superuser and not contact_user.is_staff %}
                                     <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">Regular User</span>
                                 {% endif %}
                             </div>
@@ -142,7 +142,7 @@
     </div>
 
     <!-- Embedded Chat Widget -->
-    {% if ENABLE_DMS %}
-        {% include "messaging/includes/dm.html" %}
+    {% if MESSAGING_SETTINGS.ENABLE_DMS %}
+        {% include "messaging/includes/dm.html" with contact_user=contact_user %}
     {% endif %}
 {% endblock %}
