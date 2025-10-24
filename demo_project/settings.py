@@ -93,6 +93,9 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        "TEST": {
+            "NAME": BASE_DIR / "test_db.sqlite3",
+        },
     }
 }
 
@@ -155,6 +158,12 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 ASGI_APPLICATION = "demo_project.asgi.application"
+
+# Django Messaging configuration
+DJANGO_MESSAGING = {
+    "TRANSPORT": "websocket",  # Default to websocket for normal operation
+    "SHOW_DELETED_MESSAGE_INDICATORS": True,  # Show deleted message indicators in tests
+}
 
 # Channel layers configuration with fallback
 try:
