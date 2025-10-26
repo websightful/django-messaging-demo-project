@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -122,7 +123,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
+
+LANGUAGES = [
+    ("en", "English"),
+]
 
 TIME_ZONE = "UTC"
 
@@ -168,7 +173,8 @@ DJANGO_MESSAGING = {
 # Channel layers configuration with fallback
 try:
     import redis
-    redis.Redis(host='127.0.0.1', port=6379, db=0).ping()
+
+    redis.Redis(host="127.0.0.1", port=6379, db=0).ping()
     # Redis is available, use it
     CHANNEL_LAYERS = {
         "default": {
@@ -181,7 +187,5 @@ try:
 except:
     # Redis not available, use in-memory backend (for development only)
     CHANNEL_LAYERS = {
-        "default": {
-            "BACKEND": "channels.layers.InMemoryChannelLayer"
-        },
+        "default": {"BACKEND": "channels.layers.InMemoryChannelLayer"},
     }

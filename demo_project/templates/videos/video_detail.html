@@ -57,11 +57,11 @@
         </div>
         
         <!-- Chat Room Sidebar -->
-        {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
         <div class="lg:col-span-1">
-            {% include "messaging/includes/room.html" with content_object=video join_button_text="Join Discussion" leave_button_text="Leave Discussion" message_placeholder="Share your thoughts..." %}
+            {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
+                {% include "messaging/includes/room.html" with content_object=video %}
+            {% endif %}
         </div>
-        {% endif %}
 </div>
 
 

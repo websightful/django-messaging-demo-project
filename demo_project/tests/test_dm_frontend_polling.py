@@ -17,6 +17,7 @@ import pytest
 from playwright.async_api import async_playwright, expect
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -73,7 +74,8 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 await asyncio.sleep(1)  # Visual pause
 
                 # Navigate receiver to messages page
-                await receiver_page.goto(f"{self.live_server_url}/messages/")
+                messages_url = reverse('django_messaging:chat-room')
+                await receiver_page.goto(f"{self.live_server_url}{messages_url}")
                 await receiver_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)  # Visual pause
 
@@ -94,7 +96,8 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                     print(f"⚠️ WARNING: Using {transport_check['transportType']} instead of PollingTransport!")
 
                 # Navigate sender to receiver's profile page
-                await sender_page.goto(f"{self.live_server_url}/people/{self.receiver.id}/")
+                person_detail_url = reverse('people:person_detail', kwargs={'user_id': self.receiver.id})
+                await sender_page.goto(f"{self.live_server_url}{person_detail_url}")
                 await sender_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)  # Visual pause
 
@@ -288,7 +291,8 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
 
     async def _login(self, page, username, password):
         """Helper to login a user"""
-        await page.goto(f"{self.live_server_url}/accounts/login/")
+        login_url = reverse('login')
+        await page.goto(f"{self.live_server_url}{login_url}")
         await page.fill('input[name="username"]', username)
         await page.fill('input[name="password"]', password)
         await page.click('button[type="submit"]')

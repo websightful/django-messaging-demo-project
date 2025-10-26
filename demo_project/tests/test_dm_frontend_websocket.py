@@ -20,6 +20,7 @@ import pytest
 from playwright.async_api import async_playwright, expect
 from django.contrib.auth import get_user_model
 from channels.testing import ChannelsLiveServerTestCase
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -70,7 +71,8 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 await self._login(receiver_page, "receiver_user_ws", "testpass123")
                 await asyncio.sleep(1)
 
-                await receiver_page.goto(f"{self.live_server_url}/messages/")
+                messages_url = reverse('django_messaging:chat-room')
+                await receiver_page.goto(f"{self.live_server_url}{messages_url}")
                 await receiver_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)
 
@@ -93,8 +95,9 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                         f"⚠️ WARNING: Using {transport_check['transportType']} instead of WebSocketTransport!"
                     )
 
+                person_detail_url = reverse('people:person_detail', kwargs={'user_id': self.receiver.id})
                 await sender_page.goto(
-                    f"{self.live_server_url}/people/{self.receiver.id}/"
+                    f"{self.live_server_url}{person_detail_url}"
                 )
                 await sender_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)
@@ -314,7 +317,8 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
     async def _login(self, page, username, password):
         """Helper to login a user"""
-        await page.goto(f"{self.live_server_url}/accounts/login/")
+        login_url = reverse('login')
+        await page.goto(f"{self.live_server_url}{login_url}")
         await page.fill('input[name="username"]', username)
         await page.fill('input[name="password"]', password)
         await page.click('button[type="submit"]')

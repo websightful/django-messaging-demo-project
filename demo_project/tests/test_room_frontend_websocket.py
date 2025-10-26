@@ -24,6 +24,7 @@ from playwright.async_api import async_playwright, expect
 from django.contrib.auth import get_user_model
 from channels.testing import ChannelsLiveServerTestCase
 from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
 
 User = get_user_model()
 
@@ -109,11 +110,12 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 await asyncio.sleep(1)
 
                 print("🌐 Navigating to video page with chat room...")
-                await user1_page.goto(f"{self.live_server_url}/videos/{self.video.pk}/")
+                video_detail_url = reverse('videos:detail', kwargs={'pk': self.video.pk})
+                await user1_page.goto(f"{self.live_server_url}{video_detail_url}")
                 await user1_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)
 
-                await user2_page.goto(f"{self.live_server_url}/videos/{self.video.pk}/")
+                await user2_page.goto(f"{self.live_server_url}{video_detail_url}")
                 await user2_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)
 
@@ -307,7 +309,8 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
     async def _login(self, page, username, password):
         """Helper to login a user"""
-        await page.goto(f"{self.live_server_url}/accounts/login/")
+        login_url = reverse('login')
+        await page.goto(f"{self.live_server_url}{login_url}")
         await page.fill('input[name="username"]', username)
         await page.fill('input[name="password"]', password)
         await page.click('button[type="submit"]')

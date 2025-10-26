@@ -67,16 +67,13 @@
         </div>
         
         <!-- Chat Room Sidebar -->
-        {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
         <div class="lg:col-span-1">
-            {% include "messaging/includes/room.html" with content_object=event join_button_text="Join Chat" leave_button_text="Leave Chat" message_placeholder="Ask questions or share thoughts..." %}
+            {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
+                {% include "messaging/includes/room.html" with content_object=event %}
+            {% endif %}
         </div>
-        {% endif %}
+    </div>
 </div>
-
-<script>
-    window.EVENT_ID = '{{ event.id }}';
-</script>
 {% endblock %}
 
 {% block extra_js %}
