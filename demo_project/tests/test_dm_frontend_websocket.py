@@ -71,7 +71,7 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 await self._login(receiver_page, "receiver_user_ws", "testpass123")
                 await asyncio.sleep(1)
 
-                messages_url = reverse('django_messaging:chat-room')
+                messages_url = reverse('django_messaging:messaging-view')
                 await receiver_page.goto(f"{self.live_server_url}{messages_url}")
                 await receiver_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)

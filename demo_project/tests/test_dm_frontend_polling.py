@@ -74,7 +74,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 await asyncio.sleep(1)  # Visual pause
 
                 # Navigate receiver to messages page
-                messages_url = reverse('django_messaging:chat-room')
+                messages_url = reverse('django_messaging:messaging-view')
                 await receiver_page.goto(f"{self.live_server_url}{messages_url}")
                 await receiver_page.wait_for_load_state("networkidle")
                 await asyncio.sleep(1)  # Visual pause
