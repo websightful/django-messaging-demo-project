@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
-{% load messaging_filters %}
+{% load messaging_filters static %}
 
 {% block title %}{{ event.title }}{% endblock %}
 
@@ -74,4 +73,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock content %}

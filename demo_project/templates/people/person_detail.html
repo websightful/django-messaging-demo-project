@@ -142,4 +142,4 @@
     {% if MESSAGING_SETTINGS.ENABLE_DMS and request.user != contact_user %}
         {% include "messaging/includes/dm.html" with contact_user=contact_user %}
     {% endif %}
-{% endblock %}
+{% endblock content %}
