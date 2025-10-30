@@ -34,6 +34,7 @@ def person_list(request):
 
     context = {
         'page_obj': page_obj,
+        'users_with_avatars': page_obj,
         'search_query': search_query,
         'total_users': users.count(),
     }

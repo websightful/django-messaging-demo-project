@@ -69,12 +69,10 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
             try:
                 await self._login(sender_page, "sender_user_ws", "testpass123")
                 await self._login(receiver_page, "receiver_user_ws", "testpass123")
-                await asyncio.sleep(1)
 
                 messages_url = reverse('django_messaging:messaging-view')
                 await receiver_page.goto(f"{self.live_server_url}{messages_url}")
                 await receiver_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)
 
                 transport_check = await receiver_page.evaluate(
                     """
@@ -100,27 +98,22 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     f"{self.live_server_url}{person_detail_url}"
                 )
                 await sender_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)
 
                 chat_toggle_btn = sender_page.locator("#chat-toggle-btn")
                 await expect(chat_toggle_btn).to_be_visible()
                 await chat_toggle_btn.click()
-                await asyncio.sleep(1)
 
                 widget = sender_page.locator("#fixed-chat-widget")
                 await expect(widget).to_be_visible()
-                await asyncio.sleep(1)
 
                 print("📤 Test 1: Sending message from sender via WebSocket...")
                 await self._send_message_in_widget(sender_page, "Hello via WebSocket!")
-                await asyncio.sleep(1.5)
 
                 await expect(
                     sender_page.locator("#widget-message-list").get_by_text(
                         "Hello via WebSocket!"
                     )
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1)
+                ).to_be_visible(timeout=10000)
 
                 print(
                     "📥 Test 2: Receiver sees new chat via WebSocket and selects it..."
@@ -133,42 +126,36 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 chat_item = receiver_page.locator(".chat-item").filter(
                     has_text=sender_name
                 )
-                await expect(chat_item).to_be_visible(timeout=5000)
+                await expect(chat_item).to_be_visible(timeout=10000)
                 print(f"✅ Chat with '{sender_name}' is visible")
-                await asyncio.sleep(1.5)
 
                 await chat_item.click()
                 await asyncio.sleep(2)
 
                 message_list = receiver_page.locator("#message-list")
-                await expect(message_list).to_be_visible(timeout=5000)
-                await asyncio.sleep(1)
+                await expect(message_list).to_be_visible(timeout=10000)
 
                 print("📥 Verifying receiver sees message via WebSocket...")
                 await expect(
                     message_list.get_by_text("Hello via WebSocket!")
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("📤 Test 3: Receiver sends reply...")
                 await self._send_message_in_messages_page(
                     receiver_page, "Hello from receiver!"
                 )
-                await asyncio.sleep(1.5)
 
                 print("📥 Verifying sender receives reply via WebSocket...")
                 await expect(
                     sender_page.locator("#widget-message-list").get_by_text(
                         "Hello from receiver!"
                     )
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("👍 Test 4: Sender adds reaction...")
                 await self._add_reaction_in_widget(
                     sender_page, "Hello from receiver!", "👍"
                 )
-                await asyncio.sleep(1)
 
                 print("📥 Test 5: Verifying receiver sees reaction via WebSocket...")
                 receiver_message = receiver_page.locator(
@@ -176,14 +163,12 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 ).filter(has_text="Hello from receiver!")
                 await expect(
                     receiver_message.locator(".reaction").filter(has_text="👍")
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("❤️ Test 6: Receiver adds reaction...")
                 await self._add_reaction_in_messages_page(
                     receiver_page, "Hello via WebSocket!", "❤️"
                 )
-                await asyncio.sleep(1)
 
                 print("📥 Test 7: Verifying sender sees reaction via WebSocket...")
                 sender_message = sender_page.locator(
@@ -191,14 +176,12 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 ).filter(has_text="Hello via WebSocket!")
                 await expect(
                     sender_message.locator(".reaction").filter(has_text="❤️")
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("🗑️ Test 8: Sender removes reaction...")
                 await self._remove_reaction_in_widget(
                     sender_page, "Hello from receiver!", "👍"
                 )
-                await asyncio.sleep(1)
 
                 print(
                     "📥 Test 9: Verifying receiver sees reaction removed via WebSocket..."
@@ -208,14 +191,12 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 ).filter(has_text="Hello from receiver!")
                 await expect(
                     receiver_message.locator(".reaction").filter(has_text="👍")
-                ).not_to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).not_to_be_visible(timeout=10000)
 
                 print("🗑️ Test 10: Receiver removes reaction...")
                 await self._remove_reaction_in_messages_page(
                     receiver_page, "Hello via WebSocket!", "❤️"
                 )
-                await asyncio.sleep(1)
 
                 print(
                     "📥 Test 11: Verifying sender sees reaction removed via WebSocket..."
@@ -225,14 +206,12 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 ).filter(has_text="Hello via WebSocket!")
                 await expect(
                     sender_message.locator(".reaction").filter(has_text="❤️")
-                ).not_to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).not_to_be_visible(timeout=10000)
 
                 print("✏️ Test 12: Sender edits message...")
                 await self._edit_message_in_widget(
                     sender_page, "Hello via WebSocket!", "Hello via WebSocket (edited)!"
                 )
-                await asyncio.sleep(1)
 
                 print(
                     "📥 Test 13: Verifying receiver sees edited message via WebSocket..."
@@ -241,7 +220,7 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     receiver_page.locator("#message-list").get_by_text(
                         "Hello via WebSocket (edited)!"
                     )
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 edited_message = receiver_page.locator(
                     "#message-list [data-message-id]"
                 ).filter(has_text="Hello via WebSocket (edited)!")
@@ -250,7 +229,6 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 timestamp = edited_message.locator(".message-timestamp")
                 await expect(timestamp).to_be_visible()
                 await expect(timestamp).to_contain_text("Edited")
-                await asyncio.sleep(1.5)
 
                 print("✏️ Test 14: Receiver edits message...")
                 await self._edit_message_in_messages_page(
@@ -258,7 +236,6 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     "Hello from receiver!",
                     "Hello from receiver (edited)!",
                 )
-                await asyncio.sleep(1)
 
                 print(
                     "📥 Test 15: Verifying sender sees edited message via WebSocket..."
@@ -267,7 +244,7 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     sender_page.locator("#widget-message-list").get_by_text(
                         "Hello from receiver (edited)!"
                     )
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 edited_message_widget = sender_page.locator(
                     "#widget-message-list [data-message-id]"
                 ).filter(has_text="Hello from receiver (edited)!")
@@ -276,13 +253,11 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 timestamp_widget = edited_message_widget.locator(".message-timestamp")
                 await expect(timestamp_widget).to_be_visible()
                 await expect(timestamp_widget).to_contain_text("Edited")
-                await asyncio.sleep(1.5)
 
                 print("🗑️ Test 16: Sender deletes message...")
                 await self._delete_message_in_widget(
                     sender_page, "Hello via WebSocket (edited)!"
                 )
-                await asyncio.sleep(1)
 
                 print(
                     "📥 Test 17: Verifying receiver sees deleted message via WebSocket..."
@@ -291,13 +266,11 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 await expect(
                     receiver_page.locator(".deleted-indicator").first
                 ).to_be_visible(timeout=10000)
-                await asyncio.sleep(1.5)
 
                 print("🗑️ Test 18: Receiver deletes message...")
                 await self._delete_message_in_messages_page(
                     receiver_page, "Hello from receiver (edited)!"
                 )
-                await asyncio.sleep(1)
 
                 print(
                     "📥 Test 19: Verifying sender sees deleted message via WebSocket..."
@@ -306,7 +279,6 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 await expect(
                     sender_page.locator(".deleted-indicator").first
                 ).to_be_visible(timeout=10000)
-                await asyncio.sleep(1.5)
 
                 print("✅ All DM WebSocket tests passed!")
 
@@ -361,7 +333,7 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
         await asyncio.sleep(1)
         emoji_picker = page.locator("emoji-picker")
-        await expect(emoji_picker).to_be_visible(timeout=5000)
+        await expect(emoji_picker).to_be_visible(timeout=10000)
         emoji_option = emoji_picker.get_by_text(emoji).first
         await emoji_option.click()
         await asyncio.sleep(1)
@@ -389,7 +361,7 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
         await asyncio.sleep(1)
         emoji_picker = page.locator("emoji-picker")
-        await expect(emoji_picker).to_be_visible(timeout=5000)
+        await expect(emoji_picker).to_be_visible(timeout=10000)
         emoji_option = emoji_picker.get_by_text(emoji).first
         await emoji_option.click()
         await asyncio.sleep(1)

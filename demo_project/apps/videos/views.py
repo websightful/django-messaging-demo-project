@@ -8,6 +8,7 @@ from .models import Video
 def video_list(request):
     """Display a list of videos"""
     videos = Video.objects.filter(is_public=True)
+
     return render(request, "videos/video_list.html", {"videos": videos})
 
 

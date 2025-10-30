@@ -8,6 +8,7 @@ from .models import Event
 def event_list(request):
     """Display a list of events"""
     events = Event.objects.filter(is_public=True)
+
     return render(request, "events/event_list.html", {"events": events})
 
 

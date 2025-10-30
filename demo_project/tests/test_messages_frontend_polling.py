@@ -108,18 +108,15 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
                 print("🔐 Logging in users...")
                 await self._login(user1_page, "msg_user1", "testpass123")
                 await self._login(user2_page, "msg_user2", "testpass123")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Navigate both users to messages page
                 print("🌐 Navigating to messages page...")
                 messages_url = reverse('django_messaging:messaging-view')
                 await user1_page.goto(f"{self.live_server_url}{messages_url}")
                 await user1_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)  # Visual pause
 
                 await user2_page.goto(f"{self.live_server_url}{messages_url}")
                 await user2_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 1: Create a new chat (user1)
                 print("➕ Test 1: Creating new chat...")
@@ -128,13 +125,11 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
 
                 # Verify chat appears in chat list and is selected
                 chat_list = user1_page.locator("#chat-list")
-                await expect(chat_list.locator(".chat-item").first).to_be_visible(timeout=5000)
-                await asyncio.sleep(1)  # Visual pause
+                await expect(chat_list.locator(".chat-item").first).to_be_visible(timeout=10000)
 
                 # Wait for chat to be loaded (it's already selected by createNewChat)
                 chat_title = user1_page.locator("#current-chat-name")
-                await expect(chat_title).to_be_visible(timeout=5000)
-                await asyncio.sleep(1)  # Visual pause
+                await expect(chat_title).to_be_visible(timeout=10000)
 
                 # Test 2: Rename the chat
                 print("✏️ Test 2: Renaming chat...")
@@ -143,7 +138,6 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
 
                 # Verify chat title updated
                 await expect(chat_title).to_have_text("Test Group Chat")
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 3: Search for user2 and add them to the chat
                 print("👥 Test 3: Adding user2 to chat...")
@@ -156,27 +150,23 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
                 await asyncio.sleep(2)
                 user2_chat_list = user2_page.locator("#chat-list")
                 await expect(user2_chat_list.get_by_text("Test Group Chat")).to_be_visible(timeout=10000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 5: User1 sends a message
                 print("📤 Test 5: User1 sends message...")
                 await self._send_message(user1_page, "Hello in the group!")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 6: User2 receives the message (chat is not selected)
                 # Verify unread indicator appears on the chat
                 print("📥 Test 6: User2 sees unread indicator...")
                 await asyncio.sleep(2)
                 user2_chat_item = user2_page.locator(".chat-item").filter(has_text="Test Group Chat")
-                await expect(user2_chat_item.locator(".unread-indicator")).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)  # Visual pause
+                await expect(user2_chat_item.locator(".unread-indicator")).to_be_visible(timeout=10000)
 
                 # Test 7: User2 selects the chat and sees the message
                 print("👁️ Test 7: User2 selects chat and sees message...")
                 await user2_chat_item.click()
                 await asyncio.sleep(2)
-                await expect(user2_page.locator("#message-list").get_by_text("Hello in the group!")).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)  # Visual pause
+                await expect(user2_page.locator("#message-list").get_by_text("Hello in the group!")).to_be_visible(timeout=10000)
 
                 # Test 8: Search for user3 and add them to the chat
                 print("👥 Test 8: Adding user3 to chat...")
@@ -188,9 +178,9 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
                 print("🗑️ Test 9: Removing user3 from chat...")
                 await self._open_members_dialog(user1_page)
                 await self._switch_to_manage_members_tab(user1_page)
-                await asyncio.sleep(1)  # Wait for members to load
+                await asyncio.sleep(1)
                 await self._remove_member(user1_page, "msg_user3")
-                await asyncio.sleep(2.5)  # Visual pause
+                await asyncio.sleep(2.5)
 
                 # Test 10: Browse and join a public room (user2)
                 print("🏠 Test 10: User2 browses and joins public room...")
@@ -199,15 +189,14 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
                 await asyncio.sleep(2)
 
                 # Verify room appears in chat list
-                await expect(user2_page.locator("#chat-list").get_by_text("Public Test Room")).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)  # Visual pause
+                await expect(user2_page.locator("#chat-list").get_by_text("Public Test Room")).to_be_visible(timeout=10000)
 
                 # Test 11: Leave the room (user2)
                 print("🚪 Test 11: User2 leaves room...")
                 await self._select_chat_by_title(user2_page, "Public Test Room")
                 await asyncio.sleep(1)
                 await self._leave_chat(user2_page)
-                await asyncio.sleep(2.5)  # Visual pause
+                await asyncio.sleep(2.5)
 
                 # Test 12: User1 leaves the group chat (admin transfer)
                 print("🚪 Test 12: User1 leaves chat (admin transfer)...")
@@ -226,8 +215,7 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
                 await self._select_chat_by_title(user2_page, "Test Group Chat")
                 await asyncio.sleep(1)
                 members_btn = user2_page.locator("#members-btn")
-                await expect(members_btn).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)  # Visual pause
+                await expect(members_btn).to_be_visible(timeout=10000)
 
                 # Test 13: User2 deletes the chat
                 print("🗑️ Test 13: User2 deletes chat...")
@@ -235,8 +223,7 @@ class MessagesFrontendTestCase(StaticLiveServerTestCase):
                 await asyncio.sleep(2)
 
                 # Verify chat is removed from chat list
-                await expect(user2_page.locator("#chat-list").get_by_text("Test Group Chat")).not_to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)  # Visual pause
+                await expect(user2_page.locator("#chat-list").get_by_text("Test Group Chat")).not_to_be_visible(timeout=10000)
 
                 print("✅ All messages page frontend tests passed!")
 

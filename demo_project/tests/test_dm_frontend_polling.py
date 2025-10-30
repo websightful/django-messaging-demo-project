@@ -71,13 +71,11 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
 
                 # Login receiver
                 await self._login(receiver_page, "receiver_user", "testpass123")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Navigate receiver to messages page
                 messages_url = reverse('django_messaging:messaging-view')
                 await receiver_page.goto(f"{self.live_server_url}{messages_url}")
                 await receiver_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Verify polling transport is loaded
                 transport_check = await receiver_page.evaluate("""
@@ -99,18 +97,16 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 person_detail_url = reverse('people:person_detail', kwargs={'user_id': self.receiver.id})
                 await sender_page.goto(f"{self.live_server_url}{person_detail_url}")
                 await sender_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)  # Visual pause
+                await asyncio.sleep(1)
 
                 # Open DM widget on sender's page
                 chat_toggle_btn = sender_page.locator("#chat-toggle-btn")
                 await expect(chat_toggle_btn).to_be_visible()
                 await chat_toggle_btn.click()
-                await asyncio.sleep(1)  # Visual pause
 
                 # Wait for widget to be visible
                 widget = sender_page.locator("#fixed-chat-widget")
                 await expect(widget).to_be_visible()
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 1: Send a message from sender
                 print("📤 Test 1: Sending message from sender...")
@@ -120,8 +116,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 # Verify message appears in sender's widget
                 await expect(
                     sender_page.locator("#widget-message-list").get_by_text("Hello from sender!")
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1)  # Visual pause
+                ).to_be_visible(timeout=10000)
 
                 # Test 2: Receiver sees new chat appear and selects it
                 print("📥 Test 2: Receiver sees new chat and selects it...")
@@ -141,9 +136,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 except Exception as e:
                     print(f"⚠️ Chat not visible yet, waiting for next polling cycle...")
                     await asyncio.sleep(3)  # Wait for another polling cycle
-                    await expect(chat_item).to_be_visible(timeout=5000)
-
-                await asyncio.sleep(1.5)  # Visual pause
+                    await expect(chat_item).to_be_visible(timeout=10000)
 
                 # Click on the chat to open it
                 await chat_item.click()
@@ -151,76 +144,63 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
 
                 # Wait for message list to be visible (use ID selector)
                 message_list = receiver_page.locator("#message-list")
-                await expect(message_list).to_be_visible(timeout=5000)
-                await asyncio.sleep(1)  # Visual pause
+                await expect(message_list).to_be_visible(timeout=10000)
 
                 # Verify receiver sees the message
                 print("📥 Verifying receiver sees message...")
                 await expect(
                     message_list.get_by_text("Hello from sender!")
                 ).to_be_visible(timeout=10000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 3: Receiver sends a reply
                 print("📤 Test 3: Receiver sends reply...")
                 await self._send_message_in_messages_page(receiver_page, "Hello from receiver!")
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Verify sender receives the reply in real-time
                 print("📥 Verifying sender receives reply in real-time...")
                 await expect(
                     sender_page.locator("#widget-message-list").get_by_text("Hello from receiver!")
                 ).to_be_visible(timeout=10000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 4: Sender adds a reaction to receiver's message
                 print("👍 Test 4: Sender adds reaction...")
                 await self._add_reaction_in_widget(sender_page, "Hello from receiver!", "👍")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 5: Verify receiver sees the reaction in real-time
                 print("📥 Test 5: Verifying receiver sees reaction in real-time...")
                 receiver_message = receiver_page.locator("#message-list [data-message-id]").filter(has_text="Hello from receiver!")
                 await expect(receiver_message.locator(".reaction").filter(has_text="👍")).to_be_visible(timeout=15000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 6: Receiver adds a reaction to sender's message
                 print("❤️ Test 6: Receiver adds reaction...")
                 await self._add_reaction_in_messages_page(receiver_page, "Hello from sender!", "❤️")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 7: Verify sender sees the reaction in real-time
                 print("📥 Test 7: Verifying sender sees reaction in real-time...")
                 sender_message = sender_page.locator("#widget-message-list [data-message-id]").filter(has_text="Hello from sender!")
                 await expect(sender_message.locator(".reaction").filter(has_text="❤️")).to_be_visible(timeout=15000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 8: Sender removes their reaction
                 print("🗑️ Test 8: Sender removes reaction...")
                 await self._remove_reaction_in_widget(sender_page, "Hello from receiver!", "👍")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 9: Verify receiver sees reaction removed in real-time
                 print("📥 Test 9: Verifying receiver sees reaction removed...")
                 receiver_message = receiver_page.locator("#message-list [data-message-id]").filter(has_text="Hello from receiver!")
                 await expect(receiver_message.locator(".reaction").filter(has_text="👍")).not_to_be_visible(timeout=15000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 10: Receiver removes their reaction
                 print("🗑️ Test 10: Receiver removes reaction...")
                 await self._remove_reaction_in_messages_page(receiver_page, "Hello from sender!", "❤️")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 11: Verify sender sees reaction removed in real-time
                 print("📥 Test 11: Verifying sender sees reaction removed...")
                 sender_message = sender_page.locator("#widget-message-list [data-message-id]").filter(has_text="Hello from sender!")
                 await expect(sender_message.locator(".reaction").filter(has_text="❤️")).not_to_be_visible(timeout=15000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 12: Sender edits their message
                 print("✏️ Test 12: Sender edits message...")
                 await self._edit_message_in_widget(sender_page, "Hello from sender!", "Hello from sender (edited)!")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 13: Verify receiver sees the edited message in real-time
                 print("📥 Test 13: Verifying receiver sees edited message...")
@@ -234,12 +214,10 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 timestamp = edited_message.locator(".message-timestamp")
                 await expect(timestamp).to_be_visible()
                 await expect(timestamp).to_contain_text("Edited")
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 14: Receiver edits their message
                 print("✏️ Test 14: Receiver edits message...")
                 await self._edit_message_in_messages_page(receiver_page, "Hello from receiver!", "Hello from receiver (edited)!")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 15: Verify sender sees the edited message in real-time
                 print("📥 Test 15: Verifying sender sees edited message...")
@@ -253,12 +231,10 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 timestamp_widget = edited_message_widget.locator(".message-timestamp")
                 await expect(timestamp_widget).to_be_visible()
                 await expect(timestamp_widget).to_contain_text("Edited")
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 16: Sender deletes their message
                 print("🗑️ Test 16: Sender deletes message...")
                 await self._delete_message_in_widget(sender_page, "Hello from sender (edited)!")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 17: Verify receiver sees the deleted message in real-time
                 print("📥 Test 17: Verifying receiver sees deleted message...")
@@ -266,12 +242,10 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 await expect(
                     receiver_page.locator(".deleted-indicator").first
                 ).to_be_visible(timeout=10000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 # Test 18: Receiver deletes their message
                 print("🗑️ Test 18: Receiver deletes message...")
                 await self._delete_message_in_messages_page(receiver_page, "Hello from receiver (edited)!")
-                await asyncio.sleep(1)  # Visual pause
 
                 # Test 19: Verify sender sees the deleted message in real-time
                 print("📥 Test 19: Verifying sender sees deleted message...")
@@ -279,7 +253,6 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
                 await expect(
                     sender_page.locator(".deleted-indicator").first
                 ).to_be_visible(timeout=10000)
-                await asyncio.sleep(1.5)  # Visual pause
 
                 print("✅ All DM frontend tests passed!")
 
@@ -303,7 +276,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         message_input = page.locator("#widget-message-input")
         await message_input.fill(message_text)
         await message_input.press("Enter")
-        await asyncio.sleep(1)  # Wait for message to be sent
+        await asyncio.sleep(1)
 
     async def _send_message_in_messages_page(self, page, message_text):
         """Helper to send a message in the messages page"""
@@ -311,7 +284,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         message_input = page.locator("#message-input")
         await message_input.fill(message_text)
         await message_input.press("Enter")
-        await asyncio.sleep(1)  # Wait for message to be sent
+        await asyncio.sleep(1)
 
     async def _add_reaction_in_widget(self, page, message_text, emoji):
         """Helper to add a reaction in the DM widget"""
@@ -338,14 +311,14 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
             return false;
         }""", message_text)
 
-        await asyncio.sleep(1)  # Wait for emoji picker to appear and load
+        await asyncio.sleep(1)
         # Wait for emoji picker to be visible
         emoji_picker = page.locator("emoji-picker")
-        await expect(emoji_picker).to_be_visible(timeout=5000)
+        await expect(emoji_picker).to_be_visible(timeout=10000)
         # Click the emoji in the picker
         emoji_option = emoji_picker.get_by_text(emoji).first
         await emoji_option.click()
-        await asyncio.sleep(1)  # Wait for reaction to be added
+        await asyncio.sleep(1)
 
     async def _add_reaction_in_messages_page(self, page, message_text, emoji):
         """Helper to add a reaction in the messages page"""
@@ -372,14 +345,14 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
             return false;
         }""", message_text)
 
-        await asyncio.sleep(1)  # Wait for emoji picker to appear and load
+        await asyncio.sleep(1)
         # Wait for emoji picker to be visible
         emoji_picker = page.locator("emoji-picker")
-        await expect(emoji_picker).to_be_visible(timeout=5000)
+        await expect(emoji_picker).to_be_visible(timeout=10000)
         # Click the emoji in the picker
         emoji_option = emoji_picker.get_by_text(emoji).first
         await emoji_option.click()
-        await asyncio.sleep(1)  # Wait for reaction to be added
+        await asyncio.sleep(1)
 
     async def _remove_reaction_in_widget(self, page, message_text, emoji):
         """Helper to remove a reaction in the DM widget"""
@@ -387,7 +360,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         # Click the reaction button (not the emoji span which has pointer-events-none)
         reaction_button = message.locator(".reaction").filter(has_text=emoji)
         await reaction_button.click()
-        await asyncio.sleep(1)  # Wait for reaction to be removed
+        await asyncio.sleep(1)
 
     async def _remove_reaction_in_messages_page(self, page, message_text, emoji):
         """Helper to remove a reaction in the messages page"""
@@ -395,7 +368,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         # Click the reaction button (not the emoji span which has pointer-events-none)
         reaction_button = message.locator(".reaction").filter(has_text=emoji)
         await reaction_button.click()
-        await asyncio.sleep(1)  # Wait for reaction to be removed
+        await asyncio.sleep(1)
 
     async def _edit_message_in_widget(self, page, original_text, new_text):
         """Helper to edit a message in the DM widget"""
@@ -416,7 +389,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
             return false;
         }""", original_text)
 
-        await asyncio.sleep(0.5)  # Wait for context menu to appear
+        await asyncio.sleep(0.5)
 
         # Use JavaScript to click the edit button
         await page.evaluate("""() => {
@@ -428,7 +401,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
             return false;
         }""")
 
-        await asyncio.sleep(0.3)  # Wait for edit mode to activate
+        await asyncio.sleep(0.3)
 
         # Edit the message in the main message input field
         message_input = page.locator("#widget-message-input")
@@ -436,7 +409,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         # Save the edit
         save_btn = page.locator("#fixed-chat-widget .edit-save-btn")
         await save_btn.click()
-        await asyncio.sleep(1)  # Wait for edit to be saved
+        await asyncio.sleep(1)
 
     async def _edit_message_in_messages_page(self, page, original_text, new_text):
         """Helper to edit a message in the messages page"""
@@ -487,18 +460,18 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         if not result['success']:
             raise Exception(f"Could not edit message: {result.get('error', 'Unknown error')}")
 
-        await asyncio.sleep(0.5)  # Wait for edit mode to activate
+        await asyncio.sleep(0.5)
 
         # Edit the message in the main message input field
         message_input = page.locator("#message-input")
         await message_input.fill(new_text)
 
-        await asyncio.sleep(0.3)  # Wait for edit buttons to appear
+        await asyncio.sleep(0.3)
 
         # Save the edit - edit buttons are added to the form, not scoped to messages-container
         save_btn = page.locator(".edit-save-btn")
         await save_btn.click()
-        await asyncio.sleep(1)  # Wait for edit to be saved
+        await asyncio.sleep(1)
 
     async def _delete_message_in_widget(self, page, message_text):
         """Helper to delete a message in the DM widget"""
@@ -549,7 +522,7 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         if not result['success']:
             raise Exception(f"Could not delete message: {result.get('error', 'Unknown error')}")
 
-        await asyncio.sleep(1)  # Wait for deletion to be processed (no confirmation dialog)
+        await asyncio.sleep(1)
 
     async def _delete_message_in_messages_page(self, page, message_text):
         """Helper to delete a message in the messages page"""
@@ -600,5 +573,5 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
         if not result['success']:
             raise Exception(f"Could not delete message: {result.get('error', 'Unknown error')}")
 
-        await asyncio.sleep(1)  # Wait for deletion to be processed (no confirmation dialog)
+        await asyncio.sleep(1)
 

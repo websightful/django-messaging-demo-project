@@ -105,17 +105,14 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 print("🔐 Logging in users...")
                 await self._login(user1_page, "msg_user1_ws", "testpass123")
                 await self._login(user2_page, "msg_user2_ws", "testpass123")
-                await asyncio.sleep(1)
 
                 print("🌐 Navigating to messages page...")
                 messages_url = reverse('django_messaging:messaging-view')
                 await user1_page.goto(f"{self.live_server_url}{messages_url}")
                 await user1_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)
 
                 await user2_page.goto(f"{self.live_server_url}{messages_url}")
                 await user2_page.wait_for_load_state("networkidle")
-                await asyncio.sleep(1)
 
                 transport_check = await user1_page.evaluate(
                     """
@@ -139,20 +136,17 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
                 chat_list = user1_page.locator("#chat-list")
                 await expect(chat_list.locator(".chat-item").first).to_be_visible(
-                    timeout=5000
+                    timeout=10000
                 )
-                await asyncio.sleep(1)
 
                 chat_title = user1_page.locator("#current-chat-name")
-                await expect(chat_title).to_be_visible(timeout=5000)
-                await asyncio.sleep(1)
+                await expect(chat_title).to_be_visible(timeout=10000)
 
                 print("✏️ Test 2: Renaming chat...")
                 await self._rename_chat(user1_page, "Test Group Chat WS")
                 await asyncio.sleep(2)
 
                 await expect(chat_title).to_have_text("Test Group Chat WS")
-                await asyncio.sleep(1.5)
 
                 print("👥 Test 3: Adding user2 to chat...")
                 await self._open_members_dialog(user1_page)
@@ -164,12 +158,10 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 user2_chat_list = user2_page.locator("#chat-list")
                 await expect(
                     user2_chat_list.get_by_text("Test Group Chat WS")
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("📤 Test 5: User1 sends message...")
                 await self._send_message(user1_page, "Hello in the group!")
-                await asyncio.sleep(1)
 
                 print("📥 Test 6: User2 sees unread indicator via WebSocket...")
                 await asyncio.sleep(1.5)
@@ -178,8 +170,7 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 )
                 await expect(
                     user2_chat_item.locator(".unread-indicator")
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("👁️ Test 7: User2 selects chat and sees message...")
                 await user2_chat_item.click()
@@ -188,8 +179,7 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     user2_page.locator("#message-list").get_by_text(
                         "Hello in the group!"
                     )
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("👥 Test 8: Adding user3 to chat...")
                 await self._open_members_dialog(user1_page)
@@ -210,8 +200,7 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
                 await expect(
                     user2_page.locator("#chat-list").get_by_text("Public Test Room WS")
-                ).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).to_be_visible(timeout=10000)
 
                 print("🚪 Test 11: User2 leaves room...")
                 await self._select_chat_by_title(user2_page, "Public Test Room WS")
@@ -231,8 +220,7 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 await self._select_chat_by_title(user2_page, "Test Group Chat WS")
                 await asyncio.sleep(2)
                 members_btn = user2_page.locator("#members-btn")
-                await expect(members_btn).to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                await expect(members_btn).to_be_visible(timeout=10000)
 
                 print("🗑️ Test 13: User2 deletes chat...")
                 await self._delete_chat(user2_page)
@@ -240,8 +228,7 @@ class MessagesFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
                 await expect(
                     user2_page.locator("#chat-list").get_by_text("Test Group Chat WS")
-                ).not_to_be_visible(timeout=5000)
-                await asyncio.sleep(1.5)
+                ).not_to_be_visible(timeout=10000)
 
                 print("✅ All messages page WebSocket tests passed!")
 

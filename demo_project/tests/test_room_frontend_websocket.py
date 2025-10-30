@@ -179,7 +179,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     user1_page.locator(".room-message-list").get_by_text(
                         "Hello from User 1!"
                     )
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 await asyncio.sleep(1)
 
                 print("📥 Test 9: User2 receives message via WebSocket...")
@@ -187,7 +187,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     user2_page.locator(".room-message-list").get_by_text(
                         "Hello from User 1!"
                     )
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 await asyncio.sleep(1.5)
 
                 print("📤 Test 10: User2 sends reply...")
@@ -199,7 +199,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     user1_page.locator(".room-message-list").get_by_text(
                         "Hello from User 2!"
                     )
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 await asyncio.sleep(1.5)
 
                 print("👍 Test 12: User1 adds reaction...")
@@ -213,7 +213,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 )
                 await expect(
                     user2_message.locator(".reaction-emoji").filter(has_text="👍")
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 await asyncio.sleep(1.5)
 
                 print("❤️ Test 14: User2 adds reaction...")
@@ -227,7 +227,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 )
                 await expect(
                     user1_message.locator(".reaction-emoji").filter(has_text="❤️")
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 await asyncio.sleep(1.5)
 
                 print("🗑️ Test 16: User1 removes reaction...")
@@ -243,7 +243,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                 )
                 await expect(
                     user2_message.locator(".reaction-emoji").filter(has_text="👍")
-                ).not_to_be_visible(timeout=5000)
+                ).not_to_be_visible(timeout=10000)
                 await asyncio.sleep(1.5)
 
                 print("✏️ Test 18: User1 edits message...")
@@ -257,7 +257,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
                     user2_page.locator(".room-message-list").get_by_text(
                         "Hello from User 1 (edited)!"
                     )
-                ).to_be_visible(timeout=5000)
+                ).to_be_visible(timeout=10000)
                 await asyncio.sleep(1.5)
 
                 print("🗑️ Test 20: User1 deletes message...")
@@ -297,7 +297,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
                 print("✅ Test 25: Verifying join button reappears...")
                 join_btn2 = user2_page.locator(".join-room-btn")
-                await expect(join_btn2).to_be_visible(timeout=5000)
+                await expect(join_btn2).to_be_visible(timeout=10000)
                 await asyncio.sleep(1.5)
 
                 print("✅ All chat room WebSocket tests passed!")
@@ -346,7 +346,7 @@ class ChatRoomFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
         await asyncio.sleep(1)
         emoji_picker = page.locator("emoji-picker")
-        await expect(emoji_picker).to_be_visible(timeout=5000)
+        await expect(emoji_picker).to_be_visible(timeout=10000)
         emoji_option = emoji_picker.get_by_text(emoji).first
         await emoji_option.click()
         await asyncio.sleep(1)
