@@ -8,7 +8,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Video Content -->
         <div class="lg:col-span-2">
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                 <!-- Video Player -->
                 <div class="bg-black" style="height: 400px;">
                     {% if video.get_embed_url %}
@@ -22,10 +22,10 @@
                     {% else %}
                     <div class="w-full h-full flex items-center justify-center text-white">
                         <div class="text-center">
-                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
                             </svg>
-                            <p class="text-gray-400">Video not available for embedding</p>
+                            <p class="text-gray-400 dark:text-gray-500">Video not available for embedding</p>
                             {% if video.url %}
                             <a href="{{ video.url }}" target="_blank" class="inline-block mt-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
                                 Watch on YouTube
@@ -35,22 +35,22 @@
                     </div>
                     {% endif %}
                 </div>
-                
+
                 <div class="p-6">
-                    <h1 class="text-2xl font-bold text-gray-800 mb-4">{{ video.title }}</h1>
-                    
-                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                    <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">{{ video.title }}</h1>
+
+                    <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
                         <span>Uploaded by {{ video.uploaded_by.get_full_name|default:video.uploaded_by.username }}</span>
                         <span>{{ video.created_at|date:"M d, Y" }}</span>
                     </div>
-                    
+
                     {% if video.description %}
                     <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Description</h3>
-                        <p class="text-gray-600">{{ video.description|linebreaks }}</p>
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Description</h3>
+                        <div class="text-gray-600 dark:text-gray-300">{{ video.description|linebreaks }}</div>
                     </div>
                     {% endif %}
-                    
+
 
                 </div>
             </div>

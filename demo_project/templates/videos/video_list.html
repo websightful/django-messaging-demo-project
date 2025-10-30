@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Videos</h1>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Videos</h1>
         <a href="{% url 'events:list' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
             View Events
         </a>
@@ -13,26 +13,26 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for video in videos %}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             {% if video.thumbnail %}
             <img src="{{ video.thumbnail }}" alt="{{ video.title }}" class="w-full h-48 object-cover">
             {% else %}
-            <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
-                <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <div class="w-full h-48 bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                <svg class="w-16 h-16 text-gray-400 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
                 </svg>
             </div>
             {% endif %}
-            
+
             <div class="p-6">
-                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ video.title }}</h3>
-                <p class="text-gray-600 text-sm mb-4">{{ video.description|truncatewords:20 }}</p>
-                
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">{{ video.title }}</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">{{ video.description|truncatewords:20 }}</p>
+
+                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
                     <span>By {{ video.uploaded_by.get_full_name|default:video.uploaded_by.username }}</span>
                     <span>{{ video.created_at|date:"M d, Y" }}</span>
                 </div>
-                
+
                 <div class="flex space-x-2">
                     <a href="{{ video.get_absolute_url }}" class="flex-1 bg-blue-500 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
                         Watch & Chat
@@ -43,11 +43,11 @@
         </div>
         {% empty %}
         <div class="col-span-full text-center py-12">
-            <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
             </svg>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No videos yet</h3>
-            <p class="text-gray-500">Videos will appear here when they are uploaded.</p>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No videos yet</h3>
+            <p class="text-gray-500 dark:text-gray-400">Videos will appear here when they are uploaded.</p>
         </div>
         {% endfor %}
     </div>

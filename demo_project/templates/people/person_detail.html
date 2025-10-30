@@ -6,45 +6,45 @@
 <div class="container mx-auto px-4 py-8">
     <div class="mb-8">
         <div class="flex items-center space-x-4">
-            <a href="{% url 'people:person_list' %}" class="text-blue-600 hover:text-blue-800">
+            <a href="{% url 'people:person_list' %}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
             </a>
             <div>
-                <h1 class="text-3xl font-bold text-gray-800">{{ contact_user.get_full_name|default:contact_user.username }}</h1>
-                <p class="text-gray-600">User Profile</p>
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">{{ contact_user.get_full_name|default:contact_user.username }}</h1>
+                <p class="text-gray-600 dark:text-gray-300">User Profile</p>
             </div>
         </div>
     </div>
 
         <!-- User Profile Card -->
-        <div class="bg-white rounded-lg shadow-md p-8 mb-6">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 mb-6">
             <div class="flex items-center mb-6">
                 <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-3xl mr-6">
                     {{ contact_user.username|first|upper }}
                 </div>
                 <div>
-                    <h2 class="text-3xl font-bold text-gray-800 mb-2">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                         {% if contact_user.first_name or contact_user.last_name %}
                             {{ contact_user.first_name }} {{ contact_user.last_name }}
                         {% else %}
                             {{ contact_user.username }}
                         {% endif %}
                     </h2>
-                    <p class="text-xl text-gray-600">@{{ contact_user.username }}</p>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">@{{ contact_user.username }}</p>
                     <div class="flex items-center mt-2">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
                             <span class="w-2 h-2 bg-green-400 rounded-full mr-1"></span>
                             Active
                         </span>
                         {% if contact_user.is_staff %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 ml-2">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 ml-2">
                                 Staff
                             </span>
                         {% endif %}
                         {% if contact_user.is_superuser %}
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 ml-2">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 ml-2">
                                 Superuser
                             </span>
                         {% endif %}
@@ -56,32 +56,32 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Basic Information -->
                 <div class="space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Basic Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">Basic Information</h3>
 
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Username</label>
-                            <p class="text-gray-800">{{ contact_user.username }}</p>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Username</label>
+                            <p class="text-gray-800 dark:text-gray-200">{{ contact_user.username }}</p>
                         </div>
 
                         {% if contact_user.first_name %}
                             <div>
-                                <label class="block text-sm font-medium text-gray-600">First Name</label>
-                                <p class="text-gray-800">{{ contact_user.first_name }}</p>
+                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">First Name</label>
+                                <p class="text-gray-800 dark:text-gray-200">{{ contact_user.first_name }}</p>
                             </div>
                         {% endif %}
 
                         {% if contact_user.last_name %}
                             <div>
-                                <label class="block text-sm font-medium text-gray-600">Last Name</label>
-                                <p class="text-gray-800">{{ contact_user.last_name }}</p>
+                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Last Name</label>
+                                <p class="text-gray-800 dark:text-gray-200">{{ contact_user.last_name }}</p>
                             </div>
                         {% endif %}
 
                         {% if contact_user.email %}
                             <div>
-                                <label class="block text-sm font-medium text-gray-600">Email</label>
-                                <p class="text-gray-800">{{ contact_user.email }}</p>
+                                <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Email</label>
+                                <p class="text-gray-800 dark:text-gray-200">{{ contact_user.email }}</p>
                             </div>
                         {% endif %}
                     </div>
@@ -89,17 +89,17 @@
 
                 <!-- Account Information -->
                 <div class="space-y-4">
-                    <h3 class="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2">Account Information</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 border-b border-gray-200 dark:border-gray-700 pb-2">Account Information</h3>
 
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Date Joined</label>
-                            <p class="text-gray-800">{{ contact_user.date_joined|date:"F d, Y \a\t g:i A" }}</p>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Date Joined</label>
+                            <p class="text-gray-800 dark:text-gray-200">{{ contact_user.date_joined|date:"F d, Y \a\t g:i A" }}</p>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Last Login</label>
-                            <p class="text-gray-800">
+                            <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Last Login</label>
+                            <p class="text-gray-800 dark:text-gray-200">
                                 {% if contact_user.last_login %}
                                     {{ contact_user.last_login|date:"F d, Y \a\t g:i A" }}
                                 {% else %}
@@ -109,27 +109,27 @@
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Account Status</label>
-                            <p class="text-gray-800">
+                            <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Account Status</label>
+                            <p class="text-gray-800 dark:text-gray-200">
                                 {% if contact_user.is_active %}
-                                    <span class="text-green-600 font-medium">Active</span>
+                                    <span class="text-green-600 dark:text-green-400 font-medium">Active</span>
                                 {% else %}
-                                    <span class="text-red-600 font-medium">Inactive</span>
+                                    <span class="text-red-600 dark:text-red-400 font-medium">Inactive</span>
                                 {% endif %}
                             </p>
                         </div>
 
                         <div>
-                            <label class="block text-sm font-medium text-gray-600">Permissions</label>
+                            <label class="block text-sm font-medium text-gray-600 dark:text-gray-400">Permissions</label>
                             <div class="space-y-1">
                                 {% if contact_user.is_superuser %}
-                                    <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Superuser</span>
+                                    <span class="inline-block bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 text-xs px-2 py-1 rounded">Superuser</span>
                                 {% endif %}
                                 {% if contact_user.is_staff %}
-                                    <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded">Staff</span>
+                                    <span class="inline-block bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-xs px-2 py-1 rounded">Staff</span>
                                 {% endif %}
                                 {% if not contact_user.is_superuser and not contact_user.is_staff %}
-                                    <span class="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">Regular User</span>
+                                    <span class="inline-block bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs px-2 py-1 rounded">Regular User</span>
                                 {% endif %}
                             </div>
                         </div>

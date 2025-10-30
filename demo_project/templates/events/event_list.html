@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Events</h1>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Events</h1>
         <a href="{% url 'videos:list' %}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
             View Videos
         </a>
@@ -13,15 +13,15 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for event in events %}
-        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
             <div class="p-6">
                 <div class="flex items-start justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-gray-800">{{ event.title }}</h3>
+                    <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100">{{ event.title }}</h3>
                 </div>
-                
-                <p class="text-gray-600 text-sm mb-4">{{ event.description|truncatewords:20 }}</p>
-                
-                <div class="space-y-2 text-sm text-gray-500 mb-4">
+
+                <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">{{ event.description|truncatewords:20 }}</p>
+
+                <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
                     <div class="flex items-center">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
@@ -45,7 +45,7 @@
                         By {{ event.organizer.get_full_name|default:event.organizer.username }}
                     </div>
                 </div>
-                
+
                 <div class="flex space-x-2">
                     <a href="{{ event.get_absolute_url }}" class="flex-1 bg-blue-500 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors">
                         View & Chat
@@ -55,11 +55,11 @@
         </div>
         {% empty %}
         <div class="col-span-full text-center py-12">
-            <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="w-16 h-16 text-gray-400 dark:text-gray-500 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
             </svg>
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No events yet</h3>
-            <p class="text-gray-500">Events will appear here when they are created.</p>
+            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No events yet</h3>
+            <p class="text-gray-500 dark:text-gray-400">Events will appear here when they are created.</p>
         </div>
         {% endfor %}
     </div>

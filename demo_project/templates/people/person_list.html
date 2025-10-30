@@ -5,8 +5,8 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">People</h1>
-        <p class="text-gray-600 mt-2">Connect with other users in the community</p>
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">People</h1>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">Connect with other users in the community</p>
     </div>
 
 
@@ -15,35 +15,35 @@
         {% if page_obj %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {% for person in page_obj %}
-                    <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
                         <div class="flex items-center mb-4">
                             <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
                                 {{ person.username|first|upper }}
                             </div>
                             <div class="ml-4">
-                                <h3 class="text-lg font-semibold text-gray-800">
+                                <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
                                     {% if person.first_name or person.last_name %}
                                         {{ person.first_name }} {{ person.last_name }}
                                     {% else %}
                                         {{ person.username }}
                                     {% endif %}
                                 </h3>
-                                <p class="text-gray-600">@{{ person.username }}</p>
+                                <p class="text-gray-600 dark:text-gray-400">@{{ person.username }}</p>
                             </div>
                         </div>
-                        
+
                         {% if person.email %}
-                            <p class="text-gray-600 mb-4">
+                            <p class="text-gray-600 dark:text-gray-400 mb-4">
                                 <span class="font-medium">Email:</span> {{ person.email }}
                             </p>
                         {% endif %}
-                        
+
                         <div class="flex justify-between items-center">
-                            <span class="text-sm text-gray-500">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">
                                 Joined: {{ person.date_joined|date:"M d, Y" }}
                             </span>
-                            <a 
-                                href="{% url 'people:person_detail' person.id %}" 
+                            <a
+                                href="{% url 'people:person_detail' person.id %}"
                                 class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm"
                             >
                                 View Details
