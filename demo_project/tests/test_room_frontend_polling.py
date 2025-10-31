@@ -21,7 +21,9 @@ from playwright.async_api import async_playwright, expect
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.contenttypes.models import ContentType
+from django.test import override_settings
 from django.urls import reverse
+from .conftest import position_browser_windows_side_by_side
 
 User = get_user_model()
 
@@ -29,6 +31,14 @@ User = get_user_model()
 @pytest.mark.frontend
 @pytest.mark.slow
 @pytest.mark.polling
+@override_settings(
+    DJANGO_MESSAGING={
+        "BASE_TEMPLATE": "base.html",
+        "TOP_NAVIGATION_HEIGHT": "72px",
+        "TRANSPORT": "polling",
+        "SHOW_DELETED_MESSAGE_INDICATORS": True,
+    }
+)
 class ChatRoomFrontendTestCase(StaticLiveServerTestCase):
     """Test Chat Room functionality with Playwright using two browser contexts"""
 
@@ -107,6 +117,9 @@ class ChatRoomFrontendTestCase(StaticLiveServerTestCase):
             # Create incognito context for user2
             user2_context = await browser.new_context()
             user2_page = await user2_context.new_page()
+
+            # Position windows side by side
+            await position_browser_windows_side_by_side(user1_page, user2_page)
 
             try:
                 # Login both users

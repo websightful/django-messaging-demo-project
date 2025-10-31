@@ -170,7 +170,7 @@ ASGI_APPLICATION = "demo_project.asgi.application"
 # Django Messaging configuration
 DJANGO_MESSAGING = {
     "BASE_TEMPLATE": "base.html",
-    "TOP_NAVIGATION_HEIGHT": "64px",
+    "TOP_NAVIGATION_HEIGHT": "72px",
     "TRANSPORT": "websocket",  # Default to websocket for normal operation
     "SHOW_DELETED_MESSAGE_INDICATORS": True,  # Show deleted message indicators in tests
 }

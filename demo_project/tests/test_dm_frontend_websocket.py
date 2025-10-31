@@ -20,7 +20,9 @@ import pytest
 from playwright.async_api import async_playwright, expect
 from django.contrib.auth import get_user_model
 from channels.testing import ChannelsLiveServerTestCase
+from django.test import override_settings
 from django.urls import reverse
+from .conftest import position_browser_windows_side_by_side
 
 User = get_user_model()
 
@@ -28,6 +30,14 @@ User = get_user_model()
 @pytest.mark.frontend
 @pytest.mark.slow
 @pytest.mark.websocket
+@override_settings(
+    DJANGO_MESSAGING={
+        "BASE_TEMPLATE": "base.html",
+        "TOP_NAVIGATION_HEIGHT": "72px",
+        "TRANSPORT": "websocket",
+        "SHOW_DELETED_MESSAGE_INDICATORS": True,
+    }
+)
 class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
     """Test DM functionality with Playwright using WebSocket transport"""
 
@@ -65,6 +75,9 @@ class DMFrontendWebSocketTestCase(ChannelsLiveServerTestCase):
 
             receiver_context = await browser.new_context()
             receiver_page = await receiver_context.new_page()
+
+            # Position windows side by side
+            await position_browser_windows_side_by_side(sender_page, receiver_page)
 
             try:
                 await self._login(sender_page, "sender_user_ws", "testpass123")

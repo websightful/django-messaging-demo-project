@@ -17,7 +17,9 @@ import pytest
 from playwright.async_api import async_playwright, expect
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.test import override_settings
 from django.urls import reverse
+from .conftest import position_browser_windows_side_by_side
 
 User = get_user_model()
 
@@ -25,6 +27,14 @@ User = get_user_model()
 @pytest.mark.frontend
 @pytest.mark.slow
 @pytest.mark.polling
+@override_settings(
+    DJANGO_MESSAGING={
+        "BASE_TEMPLATE": "base.html",
+        "TOP_NAVIGATION_HEIGHT": "72px",
+        "TRANSPORT": "polling",
+        "SHOW_DELETED_MESSAGE_INDICATORS": True,
+    }
+)
 class DMFrontendTestCase(StaticLiveServerTestCase):
     """Test DM functionality with Playwright using two browser contexts"""
 
@@ -64,6 +74,13 @@ class DMFrontendTestCase(StaticLiveServerTestCase):
             # Create incognito context for receiver
             receiver_context = await browser.new_context()
             receiver_page = await receiver_context.new_page()
+
+            # Add console message listeners for debugging
+            receiver_page.on("console", lambda msg: print(f"[RECEIVER CONSOLE] {msg.type}: {msg.text}"))
+            sender_page.on("console", lambda msg: print(f"[SENDER CONSOLE] {msg.type}: {msg.text}"))
+
+            # Position windows side by side
+            await position_browser_windows_side_by_side(sender_page, receiver_page)
 
             try:
                 # Login sender

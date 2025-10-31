@@ -5,9 +5,21 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
+    <!-- Tabs for mobile/narrow viewports -->
+    <div class="lg:hidden mb-4">
+        <div class="flex border-b border-gray-200 dark:border-gray-700">
+            <button id="details-tab-btn" class="flex-1 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border-b-2 border-transparent">
+                Details
+            </button>
+            <button id="chat-tab-btn" class="flex-1 px-4 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400">
+                Chat
+            </button>
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Video Content -->
-        <div class="lg:col-span-2">
+        <div id="details-content" class="lg:col-span-2 hidden lg:block">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
                 <!-- Video Player -->
                 <div class="bg-black" style="height: 400px;">
@@ -60,14 +72,49 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Chat Room Sidebar -->
-        <div class="lg:col-span-1">
+        <div id="chat-content" class="lg:col-span-1 lg:block" style="height: calc(100vh - 12rem);">
             {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
                 {% include "messaging/includes/room.html" with content_object=video %}
             {% endif %}
         </div>
+    </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const detailsTabBtn = document.getElementById('details-tab-btn');
+    const chatTabBtn = document.getElementById('chat-tab-btn');
+    const detailsContent = document.getElementById('details-content');
+    const chatContent = document.getElementById('chat-content');
+
+    const activeClasses = ['text-blue-600', 'dark:text-blue-400', 'border-blue-600', 'dark:border-blue-400'];
+    const inactiveClasses = ['text-gray-600', 'dark:text-gray-400', 'border-transparent'];
+
+    function switchTab(showDetails) {
+        if (showDetails) {
+            detailsContent.classList.remove('hidden');
+            chatContent.classList.add('hidden');
+
+            detailsTabBtn.classList.remove(...inactiveClasses);
+            detailsTabBtn.classList.add(...activeClasses);
+            chatTabBtn.classList.remove(...activeClasses);
+            chatTabBtn.classList.add(...inactiveClasses);
+        } else {
+            detailsContent.classList.add('hidden');
+            chatContent.classList.remove('hidden');
+
+            chatTabBtn.classList.remove(...inactiveClasses);
+            chatTabBtn.classList.add(...activeClasses);
+            detailsTabBtn.classList.remove(...activeClasses);
+            detailsTabBtn.classList.add(...inactiveClasses);
+        }
+    }
+
+    detailsTabBtn.addEventListener('click', () => switchTab(true));
+    chatTabBtn.addEventListener('click', () => switchTab(false));
+});
+</script>
 
 {% endblock content %}

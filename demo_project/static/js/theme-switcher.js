@@ -71,19 +71,25 @@
      * Update toggle button icons
      */
     function updateToggleButton(theme) {
-        const toggleBtn = document.getElementById('theme-toggle');
-        if (!toggleBtn) return;
+        const toggleButtons = [
+            document.getElementById('theme-toggle'),
+            document.getElementById('theme-toggle-mobile')
+        ];
 
-        const sunIcon = toggleBtn.querySelector('.sun-icon');
-        const moonIcon = toggleBtn.querySelector('.moon-icon');
+        toggleButtons.forEach(toggleBtn => {
+            if (!toggleBtn) return;
 
-        if (theme === 'dark') {
-            if (sunIcon) sunIcon.classList.remove('hidden');
-            if (moonIcon) moonIcon.classList.add('hidden');
-        } else {
-            if (sunIcon) sunIcon.classList.add('hidden');
-            if (moonIcon) moonIcon.classList.remove('hidden');
-        }
+            const sunIcon = toggleBtn.querySelector('.sun-icon');
+            const moonIcon = toggleBtn.querySelector('.moon-icon');
+
+            if (theme === 'dark') {
+                if (sunIcon) sunIcon.classList.remove('hidden');
+                if (moonIcon) moonIcon.classList.add('hidden');
+            } else {
+                if (sunIcon) sunIcon.classList.add('hidden');
+                if (moonIcon) moonIcon.classList.remove('hidden');
+            }
+        });
     }
 
     /**
@@ -93,18 +99,59 @@
         const theme = getTheme();
         setTheme(theme);
 
-        // Add click handler to toggle button
+        // Add click handlers to toggle buttons
         const toggleBtn = document.getElementById('theme-toggle');
+        const toggleBtnMobile = document.getElementById('theme-toggle-mobile');
+
         if (toggleBtn) {
             toggleBtn.addEventListener('click', toggleTheme);
+        }
+        if (toggleBtnMobile) {
+            toggleBtnMobile.addEventListener('click', toggleTheme);
+        }
+    }
+
+    /**
+     * Initialize mobile menu
+     */
+    function initMobileMenu() {
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideMenu = mobileMenu.contains(event.target);
+                const isClickOnToggle = menuToggle.contains(event.target);
+
+                if (!isClickInsideMenu && !isClickOnToggle && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+
+            // Close menu when clicking on a link
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
         }
     }
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initTheme);
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            initMobileMenu();
+        });
     } else {
         initTheme();
+        initMobileMenu();
     }
 
     // Expose API
