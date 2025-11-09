@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "demo_project.apps.people",
     "demo_project.apps.videos",
     "demo_project.apps.events",
+    "demo_project.apps.demo_screenshots",
 ]
 
 MIDDLEWARE = [
@@ -173,6 +174,7 @@ DJANGO_MESSAGING = {
     "TOP_NAVIGATION_HEIGHT": "72px",
     "TRANSPORT": "websocket",  # Default to websocket for normal operation
     "SHOW_DELETED_MESSAGE_INDICATORS": True,  # Show deleted message indicators in tests
+    "GET_USER_NAME_FUNCTION": "demo_project.apps.people.utils.get_user_name",
 }
 
 # Channel layers configuration with fallback
