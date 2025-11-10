@@ -78,7 +78,7 @@
         </div>
 
         <!-- Chat Room Sidebar -->
-        <div id="chat-content" class="lg:col-span-1 lg:block" style="height: calc(100vh - 12rem);">
+        <div id="chat-content" class="lg:col-span-1 lg:block" style="height: calc(100vh - {{ MESSAGING_SETTINGS.CONTENT_TOP_OFFSET }} - {{ MESSAGING_SETTINGS.CONTENT_BOTTOM_OFFSET }});">
             {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
                 {% include "messaging/includes/room.html" with content_object=event %}
             {% endif %}

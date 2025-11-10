@@ -21,28 +21,34 @@
         <!-- Video Content -->
         <div id="details-content" class="lg:col-span-2 hidden lg:block">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-                <!-- Video Player -->
-                <div class="bg-black" style="height: 400px;">
-                    {% if video.get_embed_url %}
-                    <iframe
-                        src="{{ video.get_embed_url }}"
-                        class="w-full h-full"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                    </iframe>
-                    {% else %}
-                    <div class="w-full h-full flex items-center justify-center text-white">
-                        <div class="text-center">
-                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                <!-- Video Thumbnail -->
+                <div class="bg-black relative group" style="height: 400px;">
+                    {% if video.url %}
+                    <a href="{{ video.url }}" target="_blank" rel="noopener noreferrer" class="block w-full h-full">
+                        {% if video.get_thumbnail_url %}
+                        <img src="{{ video.get_thumbnail_url }}" alt="{{ video.title }}" class="w-full h-full object-cover">
+                        {% else %}
+                        <div class="w-full h-full flex items-center justify-center text-white bg-gray-800">
+                            <svg class="w-16 h-16 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
                             </svg>
-                            <p class="text-gray-400 dark:text-gray-500">Video not available for embedding</p>
-                            {% if video.url %}
-                            <a href="{{ video.url }}" target="_blank" class="inline-block mt-2 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
-                                Watch on YouTube
-                            </a>
-                            {% endif %}
+                        </div>
+                        {% endif %}
+                        <div class="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all duration-200 flex items-center justify-center">
+                            <div class="transform scale-100 group-hover:scale-110 transition-transform duration-200">
+                                <svg class="w-20 h-20 text-white opacity-90" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center text-white bg-gray-800">
+                        <div class="text-center">
+                            <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 6a2 2 0 012-2h6l2 2h6a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                            </svg>
+                            <p class="text-gray-400">Video not available</p>
                         </div>
                     </div>
                     {% endif %}
@@ -74,7 +80,7 @@
         </div>
 
         <!-- Chat Room Sidebar -->
-        <div id="chat-content" class="lg:col-span-1 lg:block" style="height: calc(100vh - 12rem);">
+        <div id="chat-content" class="lg:col-span-1 lg:block" style="height: calc(100vh - {{ MESSAGING_SETTINGS.CONTENT_TOP_OFFSET }} - {{ MESSAGING_SETTINGS.CONTENT_BOTTOM_OFFSET }});">
             {% if MESSAGING_SETTINGS.ENABLE_CHAT_ROOMS %}
                 {% include "messaging/includes/room.html" with content_object=video %}
             {% endif %}

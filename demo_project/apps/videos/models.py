@@ -38,5 +38,24 @@ class Video(models.Model):
 
         return None
 
+    def get_youtube_video_id(self):
+        """Extract YouTube video ID from URL"""
+        if 'youtube.com/watch?v=' in self.url:
+            return self.url.split('watch?v=')[1].split('&')[0]
+        elif 'youtu.be/' in self.url:
+            return self.url.split('youtu.be/')[1].split('?')[0]
+        return None
+
+    def get_thumbnail_url(self):
+        """Get thumbnail URL - use custom thumbnail or generate from YouTube"""
+        if self.thumbnail:
+            return self.thumbnail
+
+        video_id = self.get_youtube_video_id()
+        if video_id:
+            return f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
+
+        return None
+
 
 

@@ -206,12 +206,12 @@ class Command(BaseCommand):
         from django.contrib.contenttypes.models import ContentType
 
         video, video_created = Video.objects.get_or_create(
-            title="New Training Video",
+            title="How to PRIORITIZE IDEAS in Meetings Fast (Impact Effort Matrix)",
             defaults={
-                "description": "Training video for new workflow",
-                "url": "https://www.youtube.com/watch?v=F5mRW0jo-U4",
-                "embed_url": "https://www.youtube.com/embed/F5mRW0jo-U4",
-                "thumbnail": "https://img.youtube.com/vi/F5mRW0jo-U4/maxresdefault.jpg",
+                "description": "Learn how to quickly prioritize ideas in meetings using the Value vs Effort Prioritization Method and Impact Effort Matrix.",
+                "url": "https://www.youtube.com/watch?v=IojADA6zRKo",
+                "embed_url": "https://www.youtube.com/embed/IojADA6zRKo",
+                "thumbnail": "https://img.youtube.com/vi/IojADA6zRKo/maxresdefault.jpg",
                 "uploaded_by": users["maya"],
             },
         )
