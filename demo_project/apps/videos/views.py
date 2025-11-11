@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from .models import Video
 
 
-@login_required
 def video_list(request):
     """Display a list of videos"""
     videos = Video.objects.filter(is_public=True)
@@ -12,7 +11,6 @@ def video_list(request):
     return render(request, "videos/video_list.html", {"videos": videos})
 
 
-@login_required
 def video_detail(request, pk):
     """Display video detail with chat room"""
     video = get_object_or_404(Video, pk=pk, is_public=True)

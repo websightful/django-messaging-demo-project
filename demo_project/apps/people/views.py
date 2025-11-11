@@ -5,7 +5,6 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 
-@login_required
 def person_list(request):
     """
     Display a list of active users with search functionality.
@@ -42,7 +41,6 @@ def person_list(request):
     return render(request, 'people/person_list.html', context)
 
 
-@login_required
 def person_detail(request, user_id):
     """
     Display detailed information about a specific user.
