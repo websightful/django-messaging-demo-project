@@ -24,45 +24,50 @@ This demo project provides a fully functional example of Django Messaging integr
 
 ### Installation
 
-1. **Clone the repository**
+#### 1. Clone the repository
 
 ```bash
 git clone https://github.com/websightful/django-messaging-demo-project.git
 cd django-messaging-demo-project
 ```
 
-2. **Create and activate a virtual environment**
+#### 2. Purchase and download Django Messaging app
+[Get Django Messaging from Gumroad.](https://websightful.gumroad.com/l/django-messaging)
+
+Put the `*.whl` file into `private_wheels/` directory.
+
+#### 3. Create and activate a virtual environment
 
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. **Install dependencies**
+#### 4. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Install Playwright browsers** (for testing)
+#### 5. Install Playwright browsers (for testing)
 
 ```bash
 playwright install chromium
 ```
 
-5. **Run migrations**
+#### 6. Run migrations
 
 ```bash
 python manage.py migrate
 ```
 
-6. **Create a superuser**
+#### 7. Create a superuser
 
 ```bash
 python manage.py createsuperuser
 ```
 
-7. **Create test users** (optional, for testing)
+#### 8. Create test users (optional, for testing)
 
 ```bash
 python manage.py shell
