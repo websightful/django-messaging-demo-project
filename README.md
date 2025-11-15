@@ -14,6 +14,44 @@ This demo project provides a fully functional example of Django Messaging integr
 - Both WebSocket and polling transport mechanisms
 - Comprehensive frontend tests using Playwright
 
+## Demo
+
+Messages page (all chats in one place)
+
+- Browse all your DMs, group chats, and room conversations from a single Messages view
+- Unread badges, typing indicators, and per-message status (sent, delivered, read)
+- Emoji reactions, edit and delete your own messages
+- Infinite scroll with lazy loading of older messages; the DOM is cleaned up when you scroll back for smooth performance
+- Members button is always visible for admins to manage participants
+- On small screens, the UI uses two tabs (sidebar and messages); clicking a chat automatically focuses the messages tab
+
+![Group messages](assets/group_messages.png)
+
+Direct messages (1-on-1 and self-chat)
+
+- Click "New chat" to start a conversation. It creates a self-chat and opens a dialog to add users
+- Search people by full name, username, or email
+- Press Enter to send messages
+- Multiple chats with the same participants are allowed when you need separate threads
+- Real-time delivery with WebSocket and a seamless HTTP polling fallback
+
+![Direct messages](assets/direct_messages.png)
+
+Chat rooms attached to content (not joined yet)
+
+- Rooms can be embedded next to any object (e.g., videos, articles) and display the conversation even before joining
+- Users must join to post messages or reactions; non-members can still read if allowed
+- Integrates with your templates via a reusable include and the get_room_for_object template tag
+
+![Chat room](assets/chat_room_not_joined_yet.png)
+
+Participating in a room (after joining)
+
+- Once joined, you can send messages, add/remove reactions, and see read receipts
+- Reactions and messages are broadcast to all room participants in real-time
+
+![Chat room](assets/chat_room_joined.png)
+
 ## Quick Start
 
 ### Prerequisites
